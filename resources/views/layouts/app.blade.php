@@ -74,9 +74,9 @@
       <div class="collapse navbar-collapse" id="mainMenu">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0 fw-semibold">
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.home') ? 'active' : '' }}" href="{{ route('public.home') }}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('public.services') }}">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('public.map') }}">Map</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('public.track') }}">Track My Request</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.services') ? 'active' : '' }}" href="{{ route('public.services') }}">Services</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.map') ? 'active' : '' }}" href="{{ route('public.map') }}">Map</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.track') ? 'active' : '' }}" href="{{ route('public.track') }}">Track My Request</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         </ul>
       </div>

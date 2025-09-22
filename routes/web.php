@@ -19,4 +19,6 @@ Route::view('/auth', 'public.auth')->name('public.auth');
 // Protected admin routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::view('/officials', 'admin.officials.index')->name('officials');
+    Route::view('/residents', 'admin.residents.index')->name('residents');
 });

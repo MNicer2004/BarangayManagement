@@ -88,8 +88,8 @@
         }
 
         .stats-card {
-            background: var(--ink-500);
-            border: none;
+            background: var(--ink-700);
+            border: 4px solid var(--ink-300);
             border-radius: 16px;
             padding: 2rem;
             text-align: left;
@@ -106,6 +106,7 @@
         .stats-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            background: var(--ink-500);
         }
 
         .stats-card * {
@@ -278,7 +279,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="logo-container me-3">
-                            <img src="/assets/images/logo.png" class="sidebar-logo" alt="BM System Logo">
+                            <img src="assets\images\logo.png" class="sidebar-logo" alt="BM System Logo">
                         </div>
                         <div>
                             <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
@@ -310,10 +311,10 @@
                 <a href="{{ route('admin.dashboard') }}" class="nav-link active">
                     <i class="fas fa-tachometer-alt me-3"></i> Dashboard
                 </a>
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.officials') }}" class="nav-link">
                     <i class="fas fa-users me-3"></i> Brgy Officials and Staff
                 </a>
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.residents') }}" class="nav-link">
                     <i class="fas fa-address-book me-3"></i> Residents Record
                 </a>
                 <a href="#" class="nav-link">
