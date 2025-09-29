@@ -32,7 +32,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 250px;
+            width: 300px;
             z-index: 1000;
             transition: transform 0.3s ease;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
@@ -43,7 +43,7 @@
         }
 
         .main-content {
-            margin-left: 250px;
+            margin-left: 300px;
             transition: margin-left 0.3s ease;
             background-color: white;
             min-height: 100vh;
@@ -73,18 +73,23 @@
         .nav-link {
             color: rgba(255,255,255,0.8) !important;
             padding: 0.75rem 1.5rem;
-            border-radius: 0;
+            border-radius: 12px;
             transition: all 0.3s ease;
+            margin: 0.25rem 0.75rem;
+            position: relative;
         }
 
         .nav-link:hover {
             background-color: rgba(255,255,255,0.1);
             color: white !important;
+            transform: translateX(5px);
         }
 
         .nav-link.active {
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.15);
             color: white !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .stats-card {
@@ -279,11 +284,11 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="logo-container me-3">
-                            <img src="assets\images\logo.png" class="sidebar-logo" alt="BM System Logo">
+                            <img src="{{ asset('/assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
                         </div>
                         <div>
                             <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
-                            <small class="text-light opacity-75">Barangay Management</small>
+                            <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
                         </div>
                     </div>
                     <button class="btn-close-sidebar d-md-none" id="closeSidebar">
@@ -298,8 +303,20 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">Admin</div>
-                    <div class="small text-light">Administrator</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="small text-light">
+                        @if(Auth::check())
+                            @if(Auth::user()->role === 'captain')
+                                Barangay Captain
+                            @elseif(Auth::user()->role === 'staff')
+                                Admin Staff
+                            @else
+                                Administrator
+                            @endif
+                        @else
+                            Administrator
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -326,17 +343,17 @@
                 <a href="#" class="nav-link">
                     <i class="fas fa-briefcase me-3"></i> Brgy Business Clearance
                 </a>
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.blotter') }}" class="nav-link">
                     <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
                 </a>
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.documents') }}" class="nav-link">
                     <i class="fas fa-folder-open me-3"></i> Requested Documents
                 </a>
                 <a href="#" class="nav-link">
                     <i class="fas fa-house-user me-3"></i> Purok & Household Record
                 </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-pills me-3"></i> Inventory Medicines
+                <a href="{{ route('admin.medicine') }}" class="nav-link">
+                    <i class="fas fa-pills me-3"></i> Medicine Inventory
                 </a>
             </nav>
     </div>
@@ -355,22 +372,16 @@
                 <button onclick="logoutAndRedirect()" class="leave-dashboard-btn me-3">
                     ← Leave Dashboard
                 </button>
-                <div class="d-flex align-items-center text-white">
-                    <span class="me-3">Admin Administrator</span>
-                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
             </div>
         </div>
 
         <!-- Dashboard Content -->
         <div class="p-4">
-            <div class="alert alert-success mb-4">
+            <div class="alert alert-success mb-4" id="loginSuccessAlert">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-check-circle me-2"></i>
                     <strong>Success!</strong>
-                    <span class="ms-2">You have successfully logged in to Automated Brgy Management System!</span>
+                    <span class="ms-2">You have successfully logged in to Brgy Management System!</span>
                 </div>
             </div>
 
@@ -548,6 +559,21 @@
                 form.submit();
             }
         }
+
+        // Auto-hide success message after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.getElementById('loginSuccessAlert');
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.transition = 'opacity 0.5s ease-out';
+                    successAlert.style.opacity = '0';
+                    // Keep the element in place but invisible to maintain layout
+                    setTimeout(function() {
+                        successAlert.style.visibility = 'hidden';
+                    }, 500);
+                }, 5000); // Hide after 5 seconds
+            }
+        });
     </script>
 </body>
 </html>

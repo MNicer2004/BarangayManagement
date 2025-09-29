@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BlotterController;
+use App\Http\Controllers\Admin\DocumentsController;
+use App\Http\Controllers\Admin\MedicineController;
 
 // Public routes
 Route::view('/', 'public.home')->name('public.home');
@@ -21,4 +24,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::view('/officials', 'admin.officials.index')->name('officials');
     Route::view('/residents', 'admin.residents.index')->name('residents');
+    Route::get('/blotter', [BlotterController::class, 'index'])->name('blotter');
+    Route::get('/documents', [DocumentsController::class, 'index'])->name('documents');
+    Route::get('/medicine', [MedicineController::class, 'index'])->name('medicine');
 });

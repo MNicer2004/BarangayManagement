@@ -34,7 +34,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 250px;
+            width: 300px;
             z-index: 1000;
             transition: transform 0.3s ease;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
@@ -45,7 +45,7 @@
         }
 
         .main-content {
-            margin-left: 250px;
+            margin-left: 300px;
             transition: margin-left 0.3s ease;
             background-color: #f8f9fa;
             min-height: 100vh;
@@ -75,18 +75,23 @@
         .nav-link {
             color: rgba(255,255,255,0.8) !important;
             padding: 0.75rem 1.5rem;
-            border-radius: 0;
+            border-radius: 12px;
             transition: all 0.3s ease;
+            margin: 0.25rem 0.75rem;
+            position: relative;
         }
 
         .nav-link:hover {
             background-color: rgba(255,255,255,0.1);
             color: white !important;
+            transform: translateX(5px);
         }
 
         .nav-link.active {
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.15);
             color: white !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .burger-menu {
@@ -248,6 +253,65 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* Enhanced Modal Styling for Residents */
+        #residentModal .form-control,
+        #residentModal .form-select {
+            color: #212529 !important;
+            background: #ffffff !important;
+            border: 2px solid #e9ecef !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        #residentModal .form-control:focus,
+        #residentModal .form-select:focus {
+            border-color: var(--ink-700) !important;
+            box-shadow: 0 0 0 0.25rem rgba(26, 61, 99, 0.15) !important;
+            background: #ffffff !important;
+            color: #212529 !important;
+            transform: translateY(-1px);
+        }
+
+        #residentModal .form-control:hover,
+        #residentModal .form-select:hover {
+            border-color: var(--ink-500) !important;
+            background: #ffffff !important;
+            color: #212529 !important;
+            transform: translateY(-1px);
+        }
+
+        #residentModal .form-control::placeholder {
+            color: #6c757d !important;
+            opacity: 0.7;
+        }
+
+        #residentModal .form-select option {
+            color: #212529 !important;
+            background: #ffffff !important;
+        }
+
+        #residentModal .btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+
+        #residentModal .btn-outline-secondary:hover {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: #ffffff !important;
+        }
+
+        #residentModal .form-label {
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem !important;
+            color: var(--ink-900) !important;
+        }
+
+        #residentModal .modal-content {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -257,14 +321,11 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="logo-container me-3">
-                        <img src="/assets/images/logo.png" class="sidebar-logo" alt="BM System Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="logo-container" style="display:none; background: rgba(255,255,255,0.2); border-radius: 12px; width: 32px; height: 32px; align-items: center; justify-content: center;">
-                            <span style="color: white; font-weight: bold; font-size: 14px;">BM</span>
-                        </div>
+                        <img src="{{ asset('assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
                     </div>
                     <div>
                         <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
-                        <small class="text-light opacity-75">Barangay Management</small>
+                        <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
                     </div>
                 </div>
                 <button class="btn-close-sidebar d-md-none" id="closeSidebar">
@@ -279,8 +340,20 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">Admin</div>
-                    <div class="small text-light">Administrator</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="small text-light">
+                        @if(Auth::check())
+                            @if(Auth::user()->role === 'captain')
+                                Barangay Captain
+                            @elseif(Auth::user()->role === 'staff')
+                                Admin Staff
+                            @else
+                                Administrator
+                            @endif
+                        @else
+                            Administrator
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -307,17 +380,17 @@
             <a href="#" class="nav-link">
                 <i class="fas fa-briefcase me-3"></i> Brgy Business Clearance
             </a>
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.blotter') }}" class="nav-link">
                 <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
             </a>
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.documents') }}" class="nav-link">
                 <i class="fas fa-folder-open me-3"></i> Requested Documents
             </a>
             <a href="#" class="nav-link">
                 <i class="fas fa-house-user me-3"></i> Purok & Household Record
             </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Inventory Medicines
+            <a href="{{ route('admin.medicine') }}" class="nav-link">
+                <i class="fas fa-pills me-3"></i> Medicine Inventory
             </a>
         </nav>
     </div>
@@ -336,12 +409,6 @@
                 <button onclick="logoutAndRedirect()" class="leave-dashboard-btn me-3">
                     ← Leave Dashboard
                 </button>
-                <div class="d-flex align-items-center text-white">
-                    <span class="me-3">Admin Administrator</span>
-                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -390,35 +457,50 @@
         </div>
     </div>
 
-    {{-- Add/Edit Resident Modal --}}
+    {{-- Enhanced Add/Edit Resident Modal --}}
     <div class="modal fade" id="residentModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="background:#ffffff;color:#212529;border:1px solid #dee2e6">
+            <div class="modal-content shadow-lg" style="background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); border: none; border-radius: 20px;">
                 <form id="residentForm">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title fw-bold" id="residentModalTitle">Add Resident</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header" style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 25px 30px;">
+                        <h5 class="modal-title fw-bold d-flex align-items-center" id="residentModalTitle" style="font-size: 1.4rem; margin: 0;">
+                            <i class="fas fa-user-plus me-3" style="font-size: 1.3rem;"></i>
+                            Add Resident
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem;"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding: 35px 30px; background: #ffffff;">
                         <input type="hidden" id="rowIndex">
 
-                        <div class="row g-3">
+                        <div class="row g-4">
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-semibold">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Juan Dela Cruz" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-user me-2" style="color: var(--ink-700);"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="fullName" placeholder="Juan Dela Cruz" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-semibold">National ID</label>
-                                <input type="text" class="form-control" id="nationalId" placeholder="00000012113213" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-id-card me-2" style="color: var(--ink-700);"></i>National ID
+                                </label>
+                                <input type="text" class="form-control" id="nationalId" placeholder="00000012113213" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-semibold">Age</label>
-                                <input type="number" class="form-control" id="age" placeholder="25" min="0" max="120" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-birthday-cake me-2" style="color: var(--ink-700);"></i>Age
+                                </label>
+                                <input type="number" class="form-control" id="age" placeholder="25" min="0" max="120" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-semibold">Civil Status</label>
-                                <select id="civilStatus" class="form-select" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-heart me-2" style="color: var(--ink-700);"></i>Civil Status
+                                </label>
+                                <select id="civilStatus" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
                                     <option>Single</option>
                                     <option>Married</option>
@@ -428,8 +510,11 @@
                                 </select>
                             </div>
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-semibold">Gender</label>
-                                <select id="gender" class="form-select" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-venus-mars me-2" style="color: var(--ink-700);"></i>Gender
+                                </label>
+                                <select id="gender" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select gender</option>
                                     <option>Male</option>
                                     <option>Female</option>
@@ -437,22 +522,34 @@
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-semibold">Voter Status</label>
-                                <select id="voterStatus" class="form-select" required>
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-vote-yea me-2" style="color: var(--ink-700);"></i>Voter Status
+                                </label>
+                                <select id="voterStatus" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
                                     <option>Yes</option>
                                     <option>No</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-semibold">Contact Number</label>
-                                <input type="text" class="form-control" id="contact" placeholder="09XXXXXXXXX">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-phone me-2" style="color: var(--ink-700);"></i>Contact Number
+                                </label>
+                                <input type="text" class="form-control" id="contact" placeholder="09XXXXXXXXX" 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-outline-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary fw-bold btn-pill">Save</button>
+                    <div class="modal-footer" style="background: #f8f9fc; border: none; border-radius: 0 0 20px 20px; padding: 25px 30px;">
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal" 
+                                style="border-radius: 12px; padding: 12px 24px; font-weight: 600; border: 2px solid #6c757d; transition: all 0.3s ease;">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary fw-bold" 
+                                style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); border: none; border-radius: 12px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-save me-2"></i>Save Resident
+                        </button>
                     </div>
                 </form>
             </div>
@@ -607,7 +704,7 @@
 
             function openEdit(index){
                 const r = rows[index];
-                document.getElementById('residentModalTitle').textContent = 'Edit Resident';
+                document.getElementById('residentModalTitle').innerHTML = '<i class="fas fa-user-edit me-3" style="font-size: 1.3rem;"></i>Edit Resident';
                 document.getElementById('rowIndex').value = index;
                 document.getElementById('fullName').value = r.name;
                 document.getElementById('nationalId').value = r.nationalId || '';
@@ -634,7 +731,7 @@
             // Reset modal to "Add"
             document.getElementById('residentModal').addEventListener('show.bs.modal', (e) => {
                 if (e.relatedTarget && e.relatedTarget.getAttribute('data-bs-target') === '#residentModal') {
-                    document.getElementById('residentModalTitle').textContent = 'Add Resident';
+                    document.getElementById('residentModalTitle').innerHTML = '<i class="fas fa-user-plus me-3" style="font-size: 1.3rem;"></i>Add Resident';
                     document.getElementById('rowIndex').value = '';
                     document.getElementById('residentForm').reset();
                 }

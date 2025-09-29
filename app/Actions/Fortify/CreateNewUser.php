@@ -20,6 +20,11 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
+            'access_code' => ['required', 'string', function ($attribute, $value, $fail) {
+                if ($value !== 'sppxnicer') {
+                    $fail('Invalid access code. Please contact the barangay office for the correct code.');
+                }
+            }],
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -28,12 +33,14 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'role' => ['required', 'string', 'in:captain,staff'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'role' => $input['role'],
             'password' => Hash::make($input['password']),
         ]);
     }
