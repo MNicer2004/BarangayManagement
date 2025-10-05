@@ -120,7 +120,7 @@
                 </div>
                 <button type="submit" class="btn btn-light text-dark fw-bold btn-pill px-4">Log in</button>
                 <div class="small text-ink-300 mt-2">
-                  Demo credentials: captain@brgy.local / capt123
+                  
                 </div>
               </form>
             </div>
@@ -140,11 +140,6 @@
               <form method="POST" action="{{ route('register') }}" class="mt-2">
                 @csrf
                 <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Access Code</label>
-                    <input type="text" name="access_code" class="form-control" placeholder="Enter access code" value="{{ old('access_code') }}" required>
-                    <div class="small text-ink-300 mt-1">Contact the barangay office for the access code</div>
-                  </div>
                   <div class="col-12">
                     <label class="form-label fw-semibold">Full Name</label>
                     <input type="text" name="name" class="form-control" placeholder="Juan Dela Cruz" value="{{ old('name') }}" required>
@@ -180,10 +175,12 @@
                 </div>
 
                 <div class="d-flex gap-2 mt-3">
-                  <button type="submit" class="btn btn-primary-soft fw-bold btn-pill px-4">Create account</button>
+                  <button type="submit" class="btn btn-primary-soft fw-bold btn-pill px-4">Submit Request</button>
                   <button type="button" class="btn btn-ghost btn-pill px-3" data-bs-toggle="tab" data-bs-target="#signin-pane">I already have an account</button>
                 </div>
-                <div class="small text-ink-300 mt-2">Accounts are subject to approval by the barangay captain.</div>
+                <div class="small text-ink-300 mt-2">
+                  Your account request will be reviewed by the barangay captain. You'll receive email confirmation once approved.
+                </div>
               </form>
             </div>
           </div>
@@ -207,40 +204,5 @@
   };
   toggle('siToggle','siPass');
   toggle('suToggle','suPass');
-
-  // Access code validation
-  document.addEventListener('DOMContentLoaded', function() {
-    const accessCodeInput = document.querySelector('input[name="access_code"]');
-    const submitButton = document.querySelector('#signup-pane button[type="submit"]');
-    
-    if (accessCodeInput && submitButton) {
-      accessCodeInput.addEventListener('input', function() {
-        const code = this.value.toLowerCase().trim();
-        
-        if (code && code !== 'sppxnicer') {
-          this.style.borderColor = '#dc3545';
-          this.style.boxShadow = '0 0 0 0.15rem rgba(220, 53, 69, 0.25)';
-          
-          // Show error message
-          let errorMsg = this.parentNode.querySelector('.code-error');
-          if (!errorMsg) {
-            errorMsg = document.createElement('div');
-            errorMsg.className = 'code-error small text-danger mt-1';
-            errorMsg.textContent = 'Invalid access code';
-            this.parentNode.appendChild(errorMsg);
-          }
-        } else {
-          this.style.borderColor = '';
-          this.style.boxShadow = '';
-          
-          // Remove error message
-          const errorMsg = this.parentNode.querySelector('.code-error');
-          if (errorMsg) {
-            errorMsg.remove();
-          }
-        }
-      });
-    }
-  });
 </script>
 @endsection

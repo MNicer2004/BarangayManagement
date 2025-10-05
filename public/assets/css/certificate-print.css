@@ -1,0 +1,211 @@
+    /* Certificate Print Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Certificate Container */
+    .certificate {
+        width: 8.5in;
+        min-height: 11in;
+        margin: 0 auto;
+        padding: 0.5in;
+        background: white;
+        position: relative;
+        font-family: 'Times New Roman', serif;
+        color: black;
+        line-height: 1.5;
+    }
+
+    /* Header Styles */
+    .header {
+        text-align: center;
+        margin-bottom: 1in;
+        border-bottom: 2px solid black;
+        padding-bottom: 20px;
+    }
+
+    .logo {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 10px;
+        background: url('/assets/images/logo.png') no-repeat center;
+        background-size: contain;
+    }
+
+    .header h1 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .header h2 {
+        font-size: 16px;
+        margin-bottom: 3px;
+        color: black;
+    }
+
+    .header p {
+        font-size: 12px;
+        margin-bottom: 2px;
+        color: black;
+    }
+
+    /* Title Styles */
+    .title {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .title h1 {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: underline;
+        color: black;
+    }
+
+    /* Certificate Number */
+    .cert-number {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 30px;
+        color: black;
+    }
+
+    /* Body Content */
+    .body-content {
+        text-align: justify;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        color: black;
+    }
+
+    .body-content p {
+        margin-bottom: 15px;
+    }
+
+    .resident-name {
+        font-weight: bold;
+        text-decoration: underline;
+        text-transform: uppercase;
+        font-size: 16px;
+        color: black;
+    }
+
+    .purpose,
+    .address {
+        font-weight: bold;
+        text-decoration: underline;
+        color: black;
+    }
+
+    /* Date Section */
+    .date-section {
+        text-align: right;
+        margin: 30px 0;
+        font-size: 12px;
+        color: black;
+    }
+
+    /* Signatures */
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+    }
+
+    .sig-section {
+        text-align: center;
+        width: 45%;
+    }
+
+    .sig-line {
+        border-bottom: 2px solid black;
+        width: 200px;
+        margin: 40px auto 10px;
+    }
+
+    .sig-title {
+        font-size: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        color: black;
+    }
+
+    .sig-name {
+        font-size: 12px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .sig-pos {
+        font-size: 10px;
+        color: black;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        font-size: 10px;
+        margin-top: 40px;
+        border-top: 1px solid black;
+        padding-top: 15px;
+        color: black;
+    }
+
+    /* Watermark */
+    .watermark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 60px;
+        color: rgba(0, 0, 0, 0.05);
+        font-weight: bold;
+        z-index: -1;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    /* Print Media Query */
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5in;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .certificate {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            page-break-inside: avoid;
+        }
+
+        .sidebar,
+        .top-header,
+        .print-controls,
+        .main-content>*:not(.certificate-container) {
+            display: none !important;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+        }
+
+        .certificate-container {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    }

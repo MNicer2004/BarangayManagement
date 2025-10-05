@@ -460,7 +460,7 @@
                             <img src="{{ asset('assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
                         </div>
                         <div>
-                            <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
+                            <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
                             <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
                         </div>
                     </div>
@@ -507,27 +507,35 @@
                 <a href="{{ route('admin.residents') }}" class="nav-link">
                     <i class="fas fa-address-book me-3"></i> Residents Record
                 </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-certificate me-3"></i> Barangay Certificates
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-hand-holding-usd me-3"></i> Certificate of Indigency
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-briefcase me-3"></i> Brgy Business Clearance
+                <a href="{{ route('admin.certificates') }}" class="nav-link">
+                    <i class="fas fa-file-text me-3"></i> Certificate Management
                 </a>
                 <a href="{{ route('admin.blotter') }}" class="nav-link">
                     <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
                 </a>
-                <a href="{{ route('admin.documents') }}" class="nav-link">
-                    <i class="fas fa-folder-open me-3"></i> Requested Documents
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-house-user me-3"></i> Purok & Household Record
-                </a>
                 <a href="{{ route('admin.medicine') }}" class="nav-link active">
                     <i class="fas fa-pills me-3"></i> Medicine Inventory
                 </a>
+                
+                @if(Auth::check() && Auth::user()->isCaptain())
+                    <div class="px-3 py-2 mt-3">
+                        <small class="text-light opacity-75">ADMINISTRATION</small>
+                    </div>
+                    <a href="{{ Route::has('admin.account-approvals') ? route('admin.account-approvals') : url('/admin/account-approvals') }}" class="nav-link">
+                        <i class="fas fa-user-check me-3"></i> Account Approvals
+                    </a>
+                @endif
+                
+                <!-- Live Date and Time -->
+                <div class="px-3 py-3 mt-auto border-top border-secondary">
+                    <div class="text-center">
+                        <small class="text-light opacity-75 d-block mb-1">PHILIPPINES TIME</small>
+                        <div class="text-light" id="live-datetime">
+                            <div class="fw-bold" id="live-date"></div>
+                            <div class="fs-6" id="live-time"></div>
+                        </div>
+                    </div>
+                </div>
             </nav>
     </div>
 
@@ -1030,6 +1038,31 @@
                 window.location.href = '/';
             }
         }
+
+        // Function to update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Manila',
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            
+            const formatter = new Intl.DateTimeFormat('en-US', options);
+            const philippinesTime = formatter.format(now);
+            
+            document.getElementById('philippines-time').innerHTML = philippinesTime;
+        }
+
+        // Update time immediately and then every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>

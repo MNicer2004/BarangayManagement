@@ -287,7 +287,7 @@
                             <img src="{{ asset('/assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
                         </div>
                         <div>
-                            <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
+                            <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
                             <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
                         </div>
                     </div>
@@ -325,36 +325,44 @@
                 <div class="px-3 py-2">
                     <small class="text-light opacity-75">MENU</small>
                 </div>
-                <a href="{{ route('admin.dashboard') }}" class="nav-link active">
+                <a href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : url('/admin/dashboard') }}" class="nav-link active">
                     <i class="fas fa-tachometer-alt me-3"></i> Dashboard
                 </a>
-                <a href="{{ route('admin.officials') }}" class="nav-link">
+                <a href="{{ Route::has('admin.officials') ? route('admin.officials') : url('/admin/officials') }}" class="nav-link">
                     <i class="fas fa-users me-3"></i> Brgy Officials and Staff
                 </a>
-                <a href="{{ route('admin.residents') }}" class="nav-link">
+                <a href="{{ Route::has('admin.residents') ? route('admin.residents') : url('/admin/residents') }}" class="nav-link">
                     <i class="fas fa-address-book me-3"></i> Residents Record
                 </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-certificate me-3"></i> Barangay Certificates
+                <a href="{{ Route::has('admin.certificates') ? route('admin.certificates') : url('/admin/certificates') }}" class="nav-link">
+                    <i class="fas fa-file-text me-3"></i> Certificate Management
                 </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-hand-holding-usd me-3"></i> Certificate of Indigency
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-briefcase me-3"></i> Brgy Business Clearance
-                </a>
-                <a href="{{ route('admin.blotter') }}" class="nav-link">
+                <a href="{{ Route::has('admin.blotter') ? route('admin.blotter') : url('/admin/blotter') }}" class="nav-link">
                     <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
-                </a>
-                <a href="{{ route('admin.documents') }}" class="nav-link">
-                    <i class="fas fa-folder-open me-3"></i> Requested Documents
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-house-user me-3"></i> Purok & Household Record
                 </a>
                 <a href="{{ route('admin.medicine') }}" class="nav-link">
                     <i class="fas fa-pills me-3"></i> Medicine Inventory
                 </a>
+                
+                @if(Auth::check() && Auth::user()->isCaptain())
+                    <div class="px-3 py-2 mt-3">
+                        <small class="text-light opacity-75">ADMINISTRATION</small>
+                    </div>
+                    <a href="{{ Route::has('admin.account-approvals') ? route('admin.account-approvals') : url('/admin/account-approvals') }}" class="nav-link">
+                        <i class="fas fa-user-check me-3"></i> Account Approvals
+                    </a>
+                @endif
+                
+                <!-- Live Date and Time -->
+                <div class="px-3 py-3 mt-auto border-top border-secondary">
+                    <div class="text-center">
+                        <small class="text-light opacity-75 d-block mb-1">PHILIPPINES TIME</small>
+                        <div class="text-light" id="live-datetime">
+                            <div class="fw-bold" id="live-date"></div>
+                            <div class="fs-6" id="live-time"></div>
+                        </div>
+                    </div>
+                </div>
             </nav>
     </div>
 
@@ -454,7 +462,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="stats-card">
+                    <div class="stats-card" onclick="goToPurok()">
                         <div class="icon-container">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
@@ -545,7 +553,7 @@
                 // Create a form to submit logout request
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '{{ route("logout") }}';
+                form.action = '{{ Route::has("logout") ? route("logout") : url("/logout") }}';
                 
                 // Add CSRF token
                 const csrfToken = document.createElement('input');
@@ -574,6 +582,43 @@
                 }, 5000); // Hide after 5 seconds
             }
         });
+
+        // Navigate to purok page safely (fixes RouteNotFoundException)
+        function goToPurok() {
+            window.location.href = "{{ Route::has('admin.purok') ? route('admin.purok') : (Route::has('purok') ? route('purok') : url('/admin/purok')) }}";
+        }
+
+        // Live Date and Time in Philippines Time
+        function updateDateTime() {
+            const now = new Date();
+            const phTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+            
+            const dateOptions = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            
+            const dateElement = document.getElementById('live-date');
+            const timeElement = document.getElementById('live-time');
+            
+            if (dateElement && timeElement) {
+                dateElement.textContent = phTime.toLocaleDateString('en-US', dateOptions);
+                timeElement.textContent = phTime.toLocaleTimeString('en-US', timeOptions);
+            }
+        }
+
+        // Update time immediately and then every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>

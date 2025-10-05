@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Requested Documents - BM SYSTEM</title>
+    <title>Document Management - BM SYSTEM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.10/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -416,7 +416,7 @@
                         <img src="{{ asset('assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
                     </div>
                     <div>
-                        <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
+                        <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
                         <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
                     </div>
                 </div>
@@ -463,23 +463,14 @@
             <a href="{{ route('admin.residents') }}" class="nav-link">
                 <i class="fas fa-address-book me-3"></i> Residents Record
             </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-certificate me-3"></i> Barangay Certificates
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-hand-holding-usd me-3"></i> Certificate of Indigency
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-briefcase me-3"></i> Brgy Business Clearance
+            <a href="{{ route('admin.certificates') }}" class="nav-link active">
+                <i class="fas fa-file-text me-3"></i> Certificate Management
             </a>
             <a href="{{ route('admin.blotter') }}" class="nav-link">
                 <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
             </a>
-            <a href="{{ route('admin.documents') }}" class="nav-link active">
-                <i class="fas fa-folder-open me-3"></i> Requested Documents
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-house-user me-3"></i> Purok & Household Record
+            <a href="{{ route('purok') }}" class="nav-link">
+                <i class="fas fa-house-user me-3"></i> Purok & Household Records
             </a>
             <a href="{{ route('admin.medicine') }}" class="nav-link">
                 <i class="fas fa-pills me-3"></i> Medicine Inventory

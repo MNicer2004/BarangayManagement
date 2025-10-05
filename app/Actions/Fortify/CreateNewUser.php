@@ -20,11 +20,6 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            'access_code' => ['required', 'string', function ($attribute, $value, $fail) {
-                if ($value !== 'sppxnicer') {
-                    $fail('Invalid access code. Please contact the barangay office for the correct code.');
-                }
-            }],
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -42,6 +37,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'role' => $input['role'],
             'password' => Hash::make($input['password']),
+            'approval_status' => 'pending',
         ]);
     }
 }

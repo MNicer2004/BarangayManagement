@@ -28,7 +28,6 @@
 
           <div class="d-flex flex-wrap gap-2">
             <button type="button" class="btn btn-light text-dark fw-bold btn-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#aboutUsModal">About us</button>
-            <a href="{{ route('public.track') }}" class="btn btn-ghost fw-bold btn-pill px-4 py-2">Track my request</a>
           </div>
         </div>
       </div>
