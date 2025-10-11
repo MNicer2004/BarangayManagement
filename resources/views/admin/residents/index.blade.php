@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,312 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.10/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --ink-900: #0A1832;
-            --ink-700: #1A3D63;
-            --ink-500: #4A7FA7;
-            --ink-300: #B3CFE5;
-            --ink-50: #F6FAFD;
-
-            --bs-body-bg: var(--ink-900);
-            --bs-body-color: var(--ink-50);
-            --bs-link-color: var(--ink-50);
-            --bs-primary: var(--ink-700);
-            --bs-secondary: var(--ink-500);
-        }
-
-        body {
-            background-color: #f8f9fa;
-            color: #212529;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .sidebar {
-            background-color: var(--ink-900);
-            min-height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .main-content {
-            margin-left: 300px;
-            transition: margin-left 0.3s ease;
-            background-color: #f8f9fa;
-            min-height: 100vh;
-        }
-
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        .top-header {
-            background: var(--ink-700);
-            border-bottom: 1px solid rgba(255,255,255,.15);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .user-info {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .nav-link {
-            color: rgba(255,255,255,0.8) !important;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            margin: 0.25rem 0.75rem;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(255,255,255,0.1);
-            color: white !important;
-            transform: translateX(5px);
-        }
-
-        .nav-link.active {
-            background-color: rgba(255,255,255,0.15);
-            color: white !important;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .burger-menu {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .leave-dashboard-btn {
-            background-color: #dc3545;
-            border: none;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .leave-dashboard-btn:hover {
-            background-color: #c82333;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn-close-sidebar {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-close-sidebar:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .logo-container {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .sidebar-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-        }
-
-        /* Residents page specific styles */
-        .card-glass{ 
-            background: #ffffff; 
-            border:1px solid #e9ecef; 
-            border-radius:16px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            color: #212529;
-        }
-        .text-ink-300{ color:#6c757d; }
-        .btn-pill{ border-radius:999px; }
-        .badge-soft{ background:#e9ecef; border:1px solid #dee2e6; color:#495057; }
-        .status-active{ background:#198754; color:#fff; }
-        .status-inactive{ background:#dc3545; color:#fff; }
-        .voter-yes{ background:#198754; color:#fff; }
-        .voter-no{ background:#6c757d; color:#fff; }
-        
-        /* Button hover effects */
-        .btn-outline-primary:hover {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            color: #fff;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .dropdown-menu {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 1px solid #dee2e6;
-        }
-        
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        /* DataTables light look */
-        .dataTables_wrapper .dataTables_length label,
-        .dataTables_wrapper .dataTables_filter label,
-        .dataTables_wrapper .dataTables_info,
-        .dataTables_wrapper .dataTables_paginate { color:#495057; }
-        .dataTables_wrapper .form-select,
-        .dataTables_wrapper .dataTables_filter input{
-            background:#ffffff; border:1px solid #ced4da; color:#495057;
-        }
-        table.dataTable.table-dark-lite{ --bs-table-bg: #ffffff; --bs-table-border-color: #dee2e6; color:#495057; }
-        table.dataTable.table-dark-lite thead th{ color:#495057; font-weight:700; background-color: #f8f9fa; }
-        table.dataTable.table-dark-lite tbody td{ vertical-align: middle; color:#495057; }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                transform: translateX(-100%);
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .burger-menu {
-                display: block !important;
-            }
-            .top-header {
-                padding: 0.75rem 1rem;
-            }
-            .top-header h1 {
-                font-size: 1.25rem;
-            }
-            .logo-container {
-                width: 40px;
-                height: 40px;
-            }
-            .sidebar-logo {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .burger-menu {
-                display: none !important;
-            }
-            .sidebar {
-                transform: translateX(0) !important;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .top-header {
-                flex-direction: column;
-                align-items: flex-start !important;
-                gap: 1rem;
-            }
-            .top-header .d-flex:last-child {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .leave-dashboard-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Enhanced Modal Styling for Residents */
-        #residentModal .form-control,
-        #residentModal .form-select {
-            color: #212529 !important;
-            background: #ffffff !important;
-            border: 2px solid #e9ecef !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        #residentModal .form-control:focus,
-        #residentModal .form-select:focus {
-            border-color: var(--ink-700) !important;
-            box-shadow: 0 0 0 0.25rem rgba(26, 61, 99, 0.15) !important;
-            background: #ffffff !important;
-            color: #212529 !important;
-            transform: translateY(-1px);
-        }
-
-        #residentModal .form-control:hover,
-        #residentModal .form-select:hover {
-            border-color: var(--ink-500) !important;
-            background: #ffffff !important;
-            color: #212529 !important;
-            transform: translateY(-1px);
-        }
-
-        #residentModal .form-control::placeholder {
-            color: #6c757d !important;
-            opacity: 0.7;
-        }
-
-        #residentModal .form-select option {
-            color: #212529 !important;
-            background: #ffffff !important;
-        }
-
-        #residentModal .btn:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        }
-
-        #residentModal .btn-outline-secondary:hover {
-            background-color: #6c757d !important;
-            border-color: #6c757d !important;
-            color: #ffffff !important;
-        }
-
-        #residentModal .form-label {
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.85rem !important;
-            color: var(--ink-900) !important;
-        }
-
-        #residentModal .modal-content {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/residents.css') }}?v={{ time() }}">
 </head>
 <body>
     <!-- Sidebar -->
@@ -340,13 +35,13 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
                     <div class="small text-light">
                         @if(Auth::check())
                             @if(Auth::user()->role === 'captain')
                                 Barangay Captain
                             @elseif(Auth::user()->role === 'staff')
-                                Admin Staff
+                                Barangay Secretary
                             @else
                                 Administrator
                             @endif
@@ -444,16 +139,22 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table id="residentsTable" class="table table-dark-lite table-striped w-100">
+                    <table id="residentsTable" class="w-100">
                         <thead>
                             <tr>
                                 <th>Full Name</th>
                                 <th>National ID</th>
                                 <th>Age</th>
+                                <th>Birthday</th>
                                 <th>Civil Status</th>
                                 <th>Gender</th>
+                                <th>Purok</th>
+                                <th>4Ps</th>
+                                <th>PWD</th>
+                                <th>Religion</th>
+                                <th>Occupation</th>
                                 <th>Voter Status</th>
-                                <th style="width: 80px;">Action</th>
+                                <th style="width: 120px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -505,6 +206,13 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-calendar-alt me-2" style="color: var(--ink-700);"></i>Birthday
+                                </label>
+                                <input type="date" class="form-control" id="birthday" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-heart me-2" style="color: var(--ink-700);"></i>Civil Status
                                 </label>
                                 <select id="civilStatus" class="form-select" required 
@@ -517,6 +225,7 @@
                                     <option>Separated</option>
                                 </select>
                             </div>
+
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-venus-mars me-2" style="color: var(--ink-700);"></i>Gender
@@ -526,6 +235,59 @@
                                     <option value="" selected disabled>Select gender</option>
                                     <option>Male</option>
                                     <option>Female</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-map-marker-alt me-2" style="color: var(--ink-700);"></i>Purok
+                                </label>
+                                <select id="purok" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                                    <option value="" selected disabled>Select purok</option>
+                                    <option>Purok 1</option>
+                                    <option>Purok 2</option>
+                                    <option>Purok 3</option>
+                                    <option>Purok 4</option>
+                                    <option>Purok 5</option>
+                                    <option>Purok 6</option>
+                                    <option>Purok 7</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-pray me-2" style="color: var(--ink-700);"></i>Religion
+                                </label>
+                                <input type="text" class="form-control" id="religion" placeholder="Roman Catholic" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-briefcase me-2" style="color: var(--ink-700);"></i>Occupation
+                                </label>
+                                <input type="text" class="form-control" id="occupation" placeholder="Farmer" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-family me-2" style="color: var(--ink-700);"></i>4Ps Beneficiary
+                                </label>
+                                <select id="fourPs" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                                    <option value="" selected disabled>Select status</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-wheelchair me-2" style="color: var(--ink-700);"></i>PWD Status
+                                </label>
+                                <select id="pwd" class="form-select" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                                    <option value="" selected disabled>Select status</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
                                 </select>
                             </div>
 
@@ -560,6 +322,126 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- View Resident Modal --}}
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg" style="background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); border: none; border-radius: 20px;">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 25px 30px;">
+                    <h5 class="modal-title fw-bold d-flex align-items-center" style="font-size: 1.4rem; margin: 0;">
+                        <i class="fas fa-eye me-3" style="font-size: 1.3rem;"></i>
+                        View Resident Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem;"></button>
+                </div>
+                <div class="modal-body" style="padding: 35px 30px; background: #ffffff;">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-user me-2" style="color: var(--ink-700);"></i>Full Name
+                            </label>
+                            <input type="text" class="form-control" id="viewFullName" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-id-card me-2" style="color: var(--ink-700);"></i>National ID
+                            </label>
+                            <input type="text" class="form-control" id="viewNationalId" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-birthday-cake me-2" style="color: var(--ink-700);"></i>Age
+                            </label>
+                            <input type="text" class="form-control" id="viewAge" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-calendar-alt me-2" style="color: var(--ink-700);"></i>Birthday
+                            </label>
+                            <input type="text" class="form-control" id="viewBirthday" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-heart me-2" style="color: var(--ink-700);"></i>Civil Status
+                            </label>
+                            <input type="text" class="form-control" id="viewCivilStatus" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-venus-mars me-2" style="color: var(--ink-700);"></i>Gender
+                            </label>
+                            <input type="text" class="form-control" id="viewGender" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-map-marker-alt me-2" style="color: var(--ink-700);"></i>Purok
+                            </label>
+                            <input type="text" class="form-control" id="viewPurok" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-pray me-2" style="color: var(--ink-700);"></i>Religion
+                            </label>
+                            <input type="text" class="form-control" id="viewReligion" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-briefcase me-2" style="color: var(--ink-700);"></i>Occupation
+                            </label>
+                            <input type="text" class="form-control" id="viewOccupation" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-family me-2" style="color: var(--ink-700);"></i>4Ps Beneficiary
+                            </label>
+                            <input type="text" class="form-control" id="viewFourPs" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-wheelchair me-2" style="color: var(--ink-700);"></i>PWD Status
+                            </label>
+                            <input type="text" class="form-control" id="viewPwd" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-vote-yea me-2" style="color: var(--ink-700);"></i>Voter Status
+                            </label>
+                            <input type="text" class="form-control" id="viewVoterStatus" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                <i class="fas fa-phone me-2" style="color: var(--ink-700);"></i>Contact Number
+                            </label>
+                            <input type="text" class="form-control" id="viewContact" readonly 
+                                   style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; background: #f8f9fa;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #f8f9fc; border: none; border-radius: 0 0 20px 20px; padding: 25px 30px; justify-content: center;">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" 
+                            style="border-radius: 12px; padding: 12px 24px; font-weight: 600; border: 2px solid #6c757d; transition: all 0.3s ease;">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -643,13 +525,13 @@
         (() => {
             // Demo dataset – replace with server data later
             const seed = [
-                { name:'USER USER', nationalId:'00000012113213', age:13, civilStatus:'Single', gender:'Male', voterStatus:'No' },
-                { name:'USER', nationalId:'00000012113213', age:27, civilStatus:'Single', gender:'Male', voterStatus:'No' },
-                { name:'USER', nationalId:'00000012113213', age:31, civilStatus:'Single', gender:'Male', voterStatus:'Yes' },
-                { name:'USER', nationalId:'00000012113213', age:41, civilStatus:'Married', gender:'Male', voterStatus:'No' },
-                { name:'USER', nationalId:'00000012113213', age:31, civilStatus:'Single', gender:'Female', voterStatus:'Yes' },
-                { name:'Maria Santos', nationalId:'00000012113214', age:28, civilStatus:'Married', gender:'Female', voterStatus:'Yes' },
-                { name:'Jose Garcia', nationalId:'00000012113215', age:45, civilStatus:'Married', gender:'Male', voterStatus:'Yes' },
+                { name:'USER USER', nationalId:'00000012113213', age:13, birthday:'2010-01-15', civilStatus:'Single', gender:'Male', purok:'Purok 1', fourPs:'No', pwd:'No', religion:'Roman Catholic', occupation:'Student', voterStatus:'No', contact:'09123456789' },
+                { name:'USER', nationalId:'00000012113213', age:27, birthday:'1996-05-20', civilStatus:'Single', gender:'Male', purok:'Purok 2', fourPs:'Yes', pwd:'No', religion:'Born Again', occupation:'Farmer', voterStatus:'No', contact:'09123456790' },
+                { name:'USER', nationalId:'00000012113213', age:31, birthday:'1992-12-10', civilStatus:'Single', gender:'Male', purok:'Purok 3', fourPs:'No', pwd:'No', religion:'Iglesia ni Cristo', occupation:'Driver', voterStatus:'Yes', contact:'09123456791' },
+                { name:'USER', nationalId:'00000012113213', age:41, birthday:'1982-08-05', civilStatus:'Married', gender:'Male', purok:'Purok 4', fourPs:'Yes', pwd:'Yes', religion:'Roman Catholic', occupation:'Carpenter', voterStatus:'No', contact:'09123456792' },
+                { name:'USER', nationalId:'00000012113213', age:31, birthday:'1992-03-25', civilStatus:'Single', gender:'Female', purok:'Purok 5', fourPs:'No', pwd:'No', religion:'Methodist', occupation:'Teacher', voterStatus:'Yes', contact:'09123456793' },
+                { name:'Maria Santos', nationalId:'00000012113214', age:28, birthday:'1995-11-18', civilStatus:'Married', gender:'Female', purok:'Purok 6', fourPs:'Yes', pwd:'No', religion:'Roman Catholic', occupation:'Housewife', voterStatus:'Yes', contact:'09123456794' },
+                { name:'Jose Garcia', nationalId:'00000012113215', age:45, birthday:'1978-07-12', civilStatus:'Married', gender:'Male', purok:'Purok 7', fourPs:'No', pwd:'No', religion:'Seventh Day Adventist', occupation:'Businessman', voterStatus:'Yes', contact:'09123456795' },
             ];
 
             let rows = [...seed];
@@ -657,6 +539,14 @@
 
             const voterBadge = (status) => {
                 return `<span class="badge ${status==='Yes' ? 'voter-yes' : 'voter-no'}">${status}</span>`;
+            };
+
+            const statusBadge = (status, type) => {
+                const colorMap = {
+                    'fourPs': status === 'Yes' ? 'bg-success' : 'bg-secondary',
+                    'pwd': status === 'Yes' ? 'bg-warning' : 'bg-secondary'
+                };
+                return `<span class="badge ${colorMap[type]} text-white">${status}</span>`;
             };
 
             function renderTable(){
@@ -668,18 +558,26 @@
                         <td>${r.name}</td>
                         <td>${r.nationalId}</td>
                         <td>${r.age}</td>
+                        <td>${r.birthday || 'N/A'}</td>
                         <td>${r.civilStatus}</td>
                         <td>${r.gender}</td>
+                        <td>${r.purok || 'N/A'}</td>
+                        <td>${statusBadge(r.fourPs || 'No', 'fourPs')}</td>
+                        <td>${statusBadge(r.pwd || 'No', 'pwd')}</td>
+                        <td>${r.religion || 'N/A'}</td>
+                        <td>${r.occupation || 'N/A'}</td>
                         <td>${voterBadge(r.voterStatus)}</td>
-                        <td class="text-end">
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">Action</button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#" data-action="edit" data-idx="${idx}">Edit</a></li>
-                                    <li><a class="dropdown-item" href="#" data-action="toggle" data-idx="${idx}">${r.voterStatus==='Yes' ? 'Mark as Non-Voter' : 'Mark as Voter'}</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="#" data-action="remove" data-idx="${idx}">Remove</a></li>
-                                </ul>
+                        <td class="text-center">
+                            <div class="action-buttons d-flex justify-content-center">
+                                <button class="btn btn-view btn-sm" data-action="view" data-idx="${idx}" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-edit btn-sm" data-action="edit" data-idx="${idx}" title="Edit Resident">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-delete btn-sm" data-action="remove" data-idx="${idx}" title="Delete Resident">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     `;
@@ -693,21 +591,42 @@
                     lengthMenu: [5,10,25,50],
                     order: [[0,'asc']],
                     columnDefs: [
-                        { orderable:false, targets: [6] }
-                    ]
+                        { orderable:false, targets: [12] }
+                    ],
+                    scrollX: true,
+                    responsive: true
                 }));
 
-                // Bind dropdown actions
+                // Bind button actions
                 document.querySelectorAll('[data-action]').forEach(a => {
                     a.addEventListener('click', (e) => {
                         e.preventDefault();
                         const idx = +a.dataset.idx;
                         const act = a.dataset.action;
+                        if (act === 'view') viewResident(idx);
                         if (act === 'edit') openEdit(idx);
-                        if (act === 'toggle') toggleVoterStatus(idx);
                         if (act === 'remove') removeRow(idx);
                     });
                 });
+            }
+
+            function viewResident(index){
+                const r = rows[index];
+                // Populate the view modal with resident data
+                document.getElementById('viewFullName').value = r.name;
+                document.getElementById('viewNationalId').value = r.nationalId || '';
+                document.getElementById('viewAge').value = r.age || '';
+                document.getElementById('viewBirthday').value = r.birthday || 'N/A';
+                document.getElementById('viewCivilStatus').value = r.civilStatus || '';
+                document.getElementById('viewGender').value = r.gender || '';
+                document.getElementById('viewPurok').value = r.purok || 'N/A';
+                document.getElementById('viewReligion').value = r.religion || 'N/A';
+                document.getElementById('viewOccupation').value = r.occupation || 'N/A';
+                document.getElementById('viewFourPs').value = r.fourPs || 'No';
+                document.getElementById('viewPwd').value = r.pwd || 'No';
+                document.getElementById('viewVoterStatus').value = r.voterStatus || '';
+                document.getElementById('viewContact').value = r.contact || 'N/A';
+                new bootstrap.Modal('#viewModal').show();
             }
 
             function openEdit(index){
@@ -717,20 +636,21 @@
                 document.getElementById('fullName').value = r.name;
                 document.getElementById('nationalId').value = r.nationalId || '';
                 document.getElementById('age').value = r.age || '';
+                document.getElementById('birthday').value = r.birthday || '';
                 document.getElementById('civilStatus').value = r.civilStatus || '';
                 document.getElementById('gender').value = r.gender || '';
+                document.getElementById('purok').value = r.purok || '';
+                document.getElementById('fourPs').value = r.fourPs || '';
+                document.getElementById('pwd').value = r.pwd || '';
+                document.getElementById('religion').value = r.religion || '';
+                document.getElementById('occupation').value = r.occupation || '';
                 document.getElementById('voterStatus').value = r.voterStatus || '';
                 document.getElementById('contact').value = r.contact || '';
                 new bootstrap.Modal('#residentModal').show();
             }
 
-            function toggleVoterStatus(index){
-                rows[index].voterStatus = rows[index].voterStatus === 'Yes' ? 'No' : 'Yes';
-                renderTable();
-            }
-
             function removeRow(index){
-                if (confirm('Remove this resident?')) {
+                if (confirm('Are you sure you want to remove this resident?')) {
                     rows.splice(index, 1);
                     renderTable();
                 }
@@ -753,12 +673,25 @@
                     name: document.getElementById('fullName').value.trim(),
                     nationalId: document.getElementById('nationalId').value.trim(),
                     age: document.getElementById('age').value,
+                    birthday: document.getElementById('birthday').value,
                     civilStatus: document.getElementById('civilStatus').value,
                     gender: document.getElementById('gender').value,
+                    purok: document.getElementById('purok').value,
+                    fourPs: document.getElementById('fourPs').value,
+                    pwd: document.getElementById('pwd').value,
+                    religion: document.getElementById('religion').value.trim(),
+                    occupation: document.getElementById('occupation').value.trim(),
                     voterStatus: document.getElementById('voterStatus').value,
                     contact: document.getElementById('contact').value.trim(),
                 };
-                if (!payload.name || !payload.nationalId || !payload.age) return;
+                
+                // Basic validation
+                if (!payload.name || !payload.nationalId || !payload.age || !payload.birthday || 
+                    !payload.civilStatus || !payload.gender || !payload.purok || !payload.fourPs || 
+                    !payload.pwd || !payload.religion || !payload.occupation || !payload.voterStatus) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
 
                 if (idx === '') rows.unshift(payload);     // add new at top
                 else rows[idx] = payload;                  // update

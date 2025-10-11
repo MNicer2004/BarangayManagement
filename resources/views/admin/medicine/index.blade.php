@@ -476,13 +476,13 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
                     <div class="small text-light">
                         @if(Auth::check())
                             @if(Auth::user()->role === 'captain')
                                 Barangay Captain
                             @elseif(Auth::user()->role === 'staff')
-                                Admin Staff
+                                Barangay Secretary
                             @else
                                 Administrator
                             @endif
@@ -641,33 +641,36 @@
         </div>
     </div>
 
-    <!-- Medicine Modal -->
-    <div class="modal fade" id="medicineModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="medicineModalTitle">
-                        <i class="fas fa-pills me-2"></i>Add New Medicine
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="medicineForm">
+    <!-- Enhanced Medicine Modal -->
+    <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg" style="background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); border: none; border-radius: 20px;">
+                <form id="medicineForm">
+                    <div class="modal-header" style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 25px 30px;">
+                        <h5 class="modal-title fw-bold d-flex align-items-center" id="medicineModalTitle" style="font-size: 1.4rem; margin: 0;">
+                            <i class="fas fa-pills me-3" style="font-size: 1.3rem;"></i>
+                            Add New Medicine
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem;"></button>
+                    </div>
+                    <div class="modal-body" style="padding: 35px 30px; background: #ffffff;">
                         <input type="hidden" id="medicineIndex" value="">
                         
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="medicineName" class="form-label">
-                                    <i class="fas fa-pills"></i>Medicine Name
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-pills me-2" style="color: var(--ink-700);"></i>Medicine Name
                                 </label>
-                                <input type="text" class="form-control" id="medicineName" placeholder="Enter medicine name" required>
+                                <input type="text" class="form-control" id="medicineName" placeholder="Enter medicine name" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="medicineCategory" class="form-label">
-                                    <i class="fas fa-tags"></i>Category
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-tags me-2" style="color: var(--ink-700);"></i>Category
                                 </label>
-                                <select class="form-select" id="medicineCategory" required>
-                                    <option value="">Select category</option>
+                                <select class="form-select" id="medicineCategory" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                                    <option value="" selected disabled>Select category</option>
                                     <option value="Antibiotic">Antibiotic</option>
                                     <option value="Pain Relief">Pain Relief</option>
                                     <option value="Vitamins">Vitamins</option>
@@ -679,65 +682,69 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="quantityBoxes" class="form-label">
-                                    <i class="fas fa-box"></i>Quantity (Boxes)
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-box me-2" style="color: var(--ink-700);"></i>Quantity (Boxes)
                                 </label>
-                                <input type="number" class="form-control" id="quantityBoxes" placeholder="0" min="0" required>
+                                <input type="number" class="form-control" id="quantityBoxes" placeholder="0" min="0" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="capsulesPerBox" class="form-label">
-                                    <i class="fas fa-capsules"></i>Capsules per Box
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-capsules me-2" style="color: var(--ink-700);"></i>Capsules per Box
                                 </label>
-                                <input type="number" class="form-control" id="capsulesPerBox" placeholder="0" min="1" required>
+                                <input type="number" class="form-control" id="capsulesPerBox" placeholder="0" min="1" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="medicineStrength" class="form-label">
-                                    <i class="fas fa-weight"></i>Strength
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-weight me-2" style="color: var(--ink-700);"></i>Strength
                                 </label>
-                                <input type="text" class="form-control" id="medicineStrength" placeholder="e.g., 500mg" required>
+                                <input type="text" class="form-control" id="medicineStrength" placeholder="e.g., 500mg" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="expiryDate" class="form-label">
-                                    <i class="fas fa-calendar-times"></i>Expiry Date
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-calendar-times me-2" style="color: var(--ink-700);"></i>Expiry Date
                                 </label>
-                                <input type="date" class="form-control" id="expiryDate" required>
+                                <input type="date" class="form-control" id="expiryDate" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="stockStatus" class="form-label">
-                                    <i class="fas fa-info-circle"></i>Stock Status
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-info-circle me-2" style="color: var(--ink-700);"></i>Stock Status
                                 </label>
-                                <select class="form-select" id="stockStatus" required>
-                                    <option value="">Select status</option>
+                                <select class="form-select" id="stockStatus" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
+                                    <option value="" selected disabled>Select status</option>
                                     <option value="In Stock">In Stock</option>
                                     <option value="Low Stock">Low Stock</option>
                                     <option value="Out of Stock">Out of Stock</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="remarks" class="form-label">
-                                <i class="fas fa-notes-medical"></i>Remarks
-                            </label>
-                            <textarea class="form-control" id="remarks" rows="3" placeholder="Additional notes or remarks"></textarea>
+                            <div class="col-12">
+                                <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-notes-medical me-2" style="color: var(--ink-700);"></i>Remarks
+                                </label>
+                                <textarea class="form-control" id="remarks" rows="3" placeholder="Additional notes or remarks" 
+                                          style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa; resize: none;"></textarea>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Cancel
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveMedicine()">
-                        <i class="fas fa-save me-2"></i>Save Medicine
-                    </button>
-                </div>
+                    </div>
+                    <div class="modal-footer" style="padding: 25px 30px; background: #ffffff; border-radius: 0 0 20px 20px; border: none;">
+                        <button type="button" class="btn btn-outline-secondary fw-bold px-4 py-2" data-bs-dismiss="modal" 
+                                style="border-radius: 12px; border: 2px solid #6c757d; transition: all 0.3s ease;">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary fw-bold px-4 py-2" onclick="saveMedicine()" 
+                                style="background: linear-gradient(135deg, var(--ink-700) 0%, var(--ink-500) 100%); border: none; border-radius: 12px; transition: all 0.3s ease;">
+                            <i class="fas fa-save me-2"></i>Save Medicine
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

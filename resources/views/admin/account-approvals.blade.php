@@ -318,6 +318,16 @@
             color: #212529;
         }
 
+        .status-bhw {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-bhw {
+            background: #28a745;
+            color: white;
+        }
+
         /* Ensure all table text is visible */
         .table-container .table td,
         .table-container .table td *,
@@ -427,13 +437,13 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
                     <div class="small text-light">
                         @if(Auth::check())
                             @if(Auth::user()->role === 'captain')
                                 Barangay Captain
                             @elseif(Auth::user()->role === 'staff')
-                                Admin Staff
+                                Barangay Secretary
                             @else
                                 Administrator
                             @endif
@@ -585,11 +595,19 @@
                             <tbody>
                                 @foreach($pendingUsers as $user)
                                     <tr>
-                                        <td><strong>{{ $user->name }}</strong></td>
+                                        <td><strong>{{ $user->role === 'captain' ? 'Ador G. Espiritu' : $user->name }}</strong></td>
                                         <td>{{ $user->email }}</td>
                                         <td>
                                             <span class="status-badge status-{{ $user->role }}">
-                                                {{ ucfirst($user->role) }}
+                                                @if($user->role === 'captain')
+                                                    Barangay Captain
+                                                @elseif($user->role === 'staff')
+                                                    Barangay Secretary
+                                                @elseif($user->role === 'bhw')
+                                                    BHW
+                                                @else
+                                                    {{ ucfirst($user->role) }}
+                                                @endif
                                             </span>
                                         </td>
                                         <td>{{ $user->created_at->format('M d, Y \a\t g:i A') }}</td>
@@ -609,6 +627,7 @@
                                                         <i class="fas fa-times me-1"></i>Reject
                                                     </button>
                                                 </form>
+                                                @if($user->role !== 'captain')
                                                 <form method="POST" action="{{ route('admin.account-approvals.delete', $user) }}" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -617,6 +636,7 @@
                                                         <i class="fas fa-trash me-1"></i>Delete
                                                     </button>
                                                 </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -652,10 +672,21 @@
                                     <tbody>
                                         @foreach($approvedUsers as $user)
                                             <tr>
-                                                <td><strong>{{ $user->name }}</strong></td>
-                                                <td><span class="status-badge status-{{ $user->role }}">{{ ucfirst($user->role) }}</span></td>
+                                                <td><strong>{{ $user->role === 'captain' ? 'Ador G. Espiritu' : $user->name }}</strong></td>
+                                                <td><span class="status-badge status-{{ $user->role }}">
+                                                    @if($user->role === 'captain')
+                                                        Barangay Captain
+                                                    @elseif($user->role === 'staff')
+                                                        Barangay Secretary
+                                                    @elseif($user->role === 'bhw')
+                                                        BHW
+                                                    @else
+                                                        {{ ucfirst($user->role) }}
+                                                    @endif
+                                                </span></td>
                                                 <td>{{ $user->updated_at->format('M d, Y') }}</td>
                                                 <td>
+                                                    @if($user->role !== 'captain')
                                                     <form method="POST" action="{{ route('admin.account-approvals.delete', $user) }}" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
@@ -664,6 +695,9 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
+                                                    @else
+                                                        <span class="text-muted"><i class="fas fa-shield-alt me-1"></i>Protected Account</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -691,10 +725,21 @@
                                     <tbody>
                                         @foreach($rejectedUsers as $user)
                                             <tr>
-                                                <td><strong>{{ $user->name }}</strong></td>
-                                                <td><span class="status-badge status-{{ $user->role }}">{{ ucfirst($user->role) }}</span></td>
+                                                <td><strong>{{ $user->role === 'captain' ? 'Ador G. Espiritu' : $user->name }}</strong></td>
+                                                <td><span class="status-badge status-{{ $user->role }}">
+                                                    @if($user->role === 'captain')
+                                                        Barangay Captain
+                                                    @elseif($user->role === 'staff')
+                                                        Barangay Secretary
+                                                    @elseif($user->role === 'bhw')
+                                                        BHW
+                                                    @else
+                                                        {{ ucfirst($user->role) }}
+                                                    @endif
+                                                </span></td>
                                                 <td>{{ $user->updated_at->format('M d, Y') }}</td>
                                                 <td>
+                                                    @if($user->role !== 'captain')
                                                     <form method="POST" action="{{ route('admin.account-approvals.delete', $user) }}" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
@@ -703,6 +748,9 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
+                                                    @else
+                                                        <span class="text-muted"><i class="fas fa-shield-alt me-1"></i>Protected Account</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

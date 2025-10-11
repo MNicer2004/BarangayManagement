@@ -265,13 +265,13 @@
                     <i class="fas fa-user" style="color: var(--ink-700);"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
                     <div class="small text-light">
                         @if(Auth::check())
                             @if(Auth::user()->role === 'captain')
                                 Barangay Captain
                             @elseif(Auth::user()->role === 'staff')
-                                Admin Staff
+                                Barangay Secretary
                             @else
                                 Administrator
                             @endif

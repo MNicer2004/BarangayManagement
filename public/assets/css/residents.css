@@ -1,0 +1,633 @@
+/* Residents Page Styling */
+:root {
+    --ink-900: #0A1832;
+    --ink-700: #1A3D63;
+    --ink-500: #4A7FA7;
+    --ink-300: #B3CFE5;
+    --ink-50: #F6FAFD;
+
+    --bs-body-bg: var(--ink-900);
+    --bs-body-color: var(--ink-50);
+    --bs-link-color: var(--ink-50);
+    --bs-primary: var(--ink-700);
+    --bs-secondary: var(--ink-500);
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: var(--ink-900);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.main-content {
+    margin-left: 300px;
+    transition: margin-left 0.3s ease;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+.top-header {
+    background: var(--ink-700);
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin: 0.25rem 0.75rem;
+    position: relative;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white !important;
+    transform: translateX(5px);
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.burger-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.logo-container {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.sidebar-logo {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1);
+}
+
+.btn-close-sidebar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-close-sidebar:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.leave-dashboard-btn {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.leave-dashboard-btn:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    color: white;
+}
+
+/* DataTable Styling - Override all Bootstrap table classes */
+.dataTables_wrapper .form-select,
+.dataTables_wrapper .form-control {
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+/* Force table styling - override Bootstrap and DataTables */
+#residentsTable,
+table#residentsTable {
+    background-color: white !important;
+    color: #495057 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    width: 100% !important;
+}
+
+/* Remove any Bootstrap table styling */
+#residentsTable.table,
+#residentsTable.table-striped,
+#residentsTable.table-hover {
+    --bs-table-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-striped-color: #495057 !important;
+    --bs-table-striped-bg: #f8f9fa !important;
+    --bs-table-active-color: #495057 !important;
+    --bs-table-active-bg: #e9ecef !important;
+    --bs-table-hover-color: #495057 !important;
+    --bs-table-hover-bg: #e9ecef !important;
+}
+
+#residentsTable thead th {
+    color: #495057 !important;
+    border: 1px solid #dee2e6 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    padding: 16px 12px;
+    border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* Force override any Bootstrap or DataTable theme */
+table#residentsTable thead th,
+.table thead th,
+.dataTables_wrapper table thead th {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #495057 !important;
+    border-color: #dee2e6 !important;
+}
+
+#residentsTable tbody td {
+    vertical-align: middle;
+    color: #495057 !important;
+    background-color: white !important;
+    border-color: #dee2e6 !important;
+    padding: 12px 8px;
+    font-size: 0.9rem;
+}
+
+#residentsTable tbody tr {
+    background-color: white !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#residentsTable tbody tr:nth-child(even) {
+    background-color: #f8f9fa !important;
+}
+
+#residentsTable tbody tr:hover {
+    background-color: #e9ecef !important;
+    transition: background-color 0.2s ease;
+}
+
+/* DataTable wrapper styling */
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    color: #495057 !important;
+}
+
+.dataTables_wrapper .form-select,
+.dataTables_wrapper .dataTables_filter input {
+    background: #ffffff !important;
+    border: 1px solid #ced4da !important;
+    color: #495057 !important;
+    border-radius: 6px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #495057 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #0A1832 !important;
+    border-color: #0A1832 !important;
+    color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #1A3D63 !important;
+    border-color: #1A3D63 !important;
+    color: white !important;
+}
+
+/* Residents page specific styles */
+.card-glass {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #212529;
+}
+
+.text-ink-300 {
+    color: #6c757d;
+}
+
+.btn-pill {
+    border-radius: 999px;
+}
+
+.badge-soft {
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    color: #495057;
+}
+
+.status-active {
+    background: #198754;
+    color: #fff;
+}
+
+.status-inactive {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* Button hover effects */
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Enhanced Modal Styling for Residents */
+#residentModal .form-control,
+#residentModal .form-select,
+#viewModal .form-control,
+#viewModal .form-select {
+    color: #212529 !important;
+    background: #ffffff !important;
+    border: 2px solid #e9ecef !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#residentModal .form-control:focus,
+#residentModal .form-select:focus {
+    border-color: var(--ink-700) !important;
+    box-shadow: 0 0 0 0.25rem rgba(26, 61, 99, 0.15) !important;
+    background: #ffffff !important;
+    color: #212529 !important;
+    transform: translateY(-1px);
+}
+
+#residentModal .form-control:hover,
+#residentModal .form-select:hover {
+    border-color: var(--ink-500) !important;
+    background: #ffffff !important;
+    color: #212529 !important;
+    transform: translateY(-1px);
+}
+
+#residentModal .form-control::placeholder {
+    color: #6c757d !important;
+    opacity: 0.7;
+}
+
+#residentModal .form-select option {
+    color: #212529 !important;
+    background: #ffffff !important;
+}
+
+#residentModal .btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+#residentModal .btn-outline-secondary:hover {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #ffffff !important;
+}
+
+#residentModal .form-label,
+#viewModal .form-label {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem !important;
+    color: var(--ink-900) !important;
+}
+
+#residentModal .modal-content,
+#viewModal .modal-content {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* View Modal Specific Styling */
+#viewModal .form-control,
+#viewModal .form-select {
+    background: #f8f9fa !important;
+    border: 2px solid #e9ecef !important;
+    color: #495057 !important;
+    cursor: default;
+}
+
+#viewModal .form-control:focus,
+#viewModal .form-select:focus {
+    background: #f8f9fa !important;
+    border-color: #e9ecef !important;
+    box-shadow: none !important;
+    transform: none;
+}
+
+/* Action buttons styling */
+.action-buttons .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 0 3px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-buttons .btn i {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.action-buttons .btn-view {
+    background: #17a2b8;
+    color: white !important;
+    border: 1px solid #17a2b8;
+}
+
+.action-buttons .btn-view:hover {
+    background: #138496;
+    border-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(23, 162, 184, 0.3);
+    color: white !important;
+}
+
+.action-buttons .btn-edit {
+    background: #28a745;
+    color: white !important;
+    border: 1px solid #28a745;
+}
+
+.action-buttons .btn-edit:hover {
+    background: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+    color: white !important;
+}
+
+.action-buttons .btn-delete {
+    background: #dc3545;
+    color: white !important;
+    border: 1px solid #dc3545;
+}
+
+.action-buttons .btn-delete:hover {
+    background: #c82333;
+    border-color: #bd2130;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3);
+    color: white !important;
+}
+
+/* Responsive table improvements */
+#residentsTable {
+    font-size: 0.9rem;
+}
+
+#residentsTable th {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 12px 8px;
+}
+
+#residentsTable td {
+    padding: 10px 8px;
+    vertical-align: middle;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.voter-yes {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.voter-no {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+}
+
+/* Make table more responsive */
+.table-responsive {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .burger-menu {
+        display: block !important;
+    }
+
+    .top-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .top-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .logo-container {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sidebar-logo {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+
+    .top-header .d-flex:last-child {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .leave-dashboard-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 992px) {
+    #residentsTable {
+        font-size: 0.8rem;
+    }
+
+    #residentsTable th,
+    #residentsTable td {
+        padding: 8px 6px;
+    }
+
+    .action-buttons .btn {
+        padding: 6px 8px;
+        margin: 0 1px;
+        min-width: 32px;
+        height: 32px;
+    }
+
+    .action-buttons .btn i {
+        font-size: 0.75rem;
+    }
+}
+
+/* Additional table improvements */
+#residentsTable {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#residentsTable thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+#residentsTable thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Badge improvements */
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.voter-yes {
+    background: #28a745;
+    color: white;
+}
+
+.voter-no {
+    background: #6c757d;
+    color: white;
+}
+
+.status-active {
+    background: #198754;
+    color: white;
+}
+
+.status-inactive {
+    background: #dc3545;
+    color: white;
+}

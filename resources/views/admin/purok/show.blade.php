@@ -368,7 +368,7 @@
                     <i class="fas fa-user text-white"></i>
                 </div>
                 <div>
-                    <div class="user-name">{{ Auth::user()->name ?? 'Barangay Captain' }}</div>
+                    <div class="user-name">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Barangay Captain') }}</div>
                     <div class="user-role">{{ Auth::user()->role ?? 'Barangay Captain' }}</div>
                 </div>
             </div>

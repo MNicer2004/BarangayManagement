@@ -245,27 +245,29 @@
         /* Enhanced form styling for add/edit modals */
         .modal-content .form-control,
         .modal-content .form-select {
-            background-color: #ffffff;
-            border: 2px solid #e9ecef;
-            color: #212529;
+            border: 2px solid #e9ecef !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
+            font-size: 0.95rem !important;
+            transition: all 0.3s ease !important;
+            background: #f8f9fa !important;
+            color: #212529 !important;
             font-weight: 500;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
         .modal-content .form-control:focus,
         .modal-content .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-            background-color: #ffffff;
+            border-color: var(--ink-700) !important;
+            box-shadow: 0 0 0 0.25rem rgba(74, 127, 167, 0.15) !important;
+            background-color: #ffffff !important;
+            transform: translateY(-1px);
         }
 
         .modal-content .form-label {
-            color: #495057;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            color: var(--ink-900) !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 8px !important;
+            font-weight: 600 !important;
         }
 
         .modal-content textarea.form-control {
@@ -275,13 +277,12 @@
 
         /* Section headers in modals */
         .modal-content h6.fw-bold {
-            color: #0d6efd;
+            color: var(--ink-900) !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 15px !important;
+            padding-bottom: 8px !important;
+            border-bottom: 2px solid var(--ink-300) !important;
             font-weight: 700;
-            margin-bottom: 1rem;
-            margin-top: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e9ecef;
-            font-size: 1rem;
         }
 
         .modal-content h6.fw-bold:first-of-type {
@@ -455,13 +456,13 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
                     <div class="small text-light">
                         @if(Auth::check())
                             @if(Auth::user()->role === 'captain')
                                 Barangay Captain
                             @elseif(Auth::user()->role === 'staff')
-                                Admin Staff
+                                Barangay Secretary
                             @else
                                 Administrator
                             @endif
@@ -971,59 +972,92 @@
     {{-- Add/Edit Blotter Record Modal --}}
     <div class="modal fade" id="blotterModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="background:#ffffff;color:#212529;border:1px solid #dee2e6">
+            <div class="modal-content shadow-lg" style="background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); border: none; border-radius: 20px;">
                 <form id="blotterForm">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold" id="blotterModalTitle">Add Blotter Record</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header" style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 25px 30px;">
+                        <h5 class="modal-title fw-bold d-flex align-items-center" id="blotterModalTitle" style="font-size: 1.4rem; margin: 0; color: white;">
+                            <i class="fas fa-gavel me-3" style="font-size: 1.3rem; color: white;"></i>
+                            Add Blotter Record
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem;"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row g-3">
+                    <div class="modal-body" style="padding: 35px 30px; background: #ffffff;">
+                        <div class="row g-4">
                             {{-- Complainant Information --}}
                             <div class="col-12">
-                                <h6 class="fw-bold text-primary">Complainant Information</h6>
+                                <h6 class="fw-bold" style="color: var(--ink-900); font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--ink-300);">
+                                    <i class="fas fa-user-tie me-2" style="color: var(--ink-700);"></i>Complainant Information
+                                </h6>
                             </div>
                             <div class="col-md-6">
-                                <label for="complainant_name" class="form-label">Complainant Name *</label>
-                                <input type="text" class="form-control" id="complainant_name" required>
+                                <label for="complainant_name" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-user me-2" style="color: var(--ink-700);"></i>Complainant Name *
+                                </label>
+                                <input type="text" class="form-control" id="complainant_name" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-md-6">
-                                <label for="complainant_contact" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" id="complainant_contact">
+                                <label for="complainant_contact" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-phone me-2" style="color: var(--ink-700);"></i>Contact Number
+                                </label>
+                                <input type="text" class="form-control" id="complainant_contact" 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12">
-                                <label for="complainant_address" class="form-label">Address</label>
-                                <textarea class="form-control" id="complainant_address" rows="2"></textarea>
+                                <label for="complainant_address" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-map-marker-alt me-2" style="color: var(--ink-700);"></i>Address
+                                </label>
+                                <textarea class="form-control" id="complainant_address" rows="2" 
+                                          style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;"></textarea>
                             </div>
 
                             {{-- Respondent Information --}}
                             <div class="col-12 mt-4">
-                                <h6 class="fw-bold text-primary">Respondent Information</h6>
+                                <h6 class="fw-bold" style="color: var(--ink-900); font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--ink-300);">
+                                    <i class="fas fa-user-shield me-2" style="color: var(--ink-700);"></i>Respondent Information
+                                </h6>
                             </div>
                             <div class="col-md-6">
-                                <label for="respondent_name" class="form-label">Respondent Name *</label>
-                                <input type="text" class="form-control" id="respondent_name" required>
+                                <label for="respondent_name" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-user me-2" style="color: var(--ink-700);"></i>Respondent Name *
+                                </label>
+                                <input type="text" class="form-control" id="respondent_name" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-md-6">
-                                <label for="respondent_contact" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" id="respondent_contact">
+                                <label for="respondent_contact" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-phone me-2" style="color: var(--ink-700);"></i>Contact Number
+                                </label>
+                                <input type="text" class="form-control" id="respondent_contact" 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12">
-                                <label for="respondent_address" class="form-label">Address</label>
-                                <textarea class="form-control" id="respondent_address" rows="2"></textarea>
+                                <label for="respondent_address" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-map-marker-alt me-2" style="color: var(--ink-700);"></i>Address
+                                </label>
+                                <textarea class="form-control" id="respondent_address" rows="2" 
+                                          style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;"></textarea>
                             </div>
 
                             {{-- Incident Information --}}
                             <div class="col-12 mt-4">
-                                <h6 class="fw-bold text-primary">Incident Information</h6>
+                                <h6 class="fw-bold" style="color: var(--ink-900); font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--ink-300);">
+                                    <i class="fas fa-exclamation-triangle me-2" style="color: var(--ink-700);"></i>Incident Information
+                                </h6>
                             </div>
                             <div class="col-md-6">
-                                <label for="victims" class="form-label">Victim(s) *</label>
-                                <input type="text" class="form-control" id="victims" required placeholder="Names of victims">
+                                <label for="victims" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-users me-2" style="color: var(--ink-700);"></i>Victim(s) *
+                                </label>
+                                <input type="text" class="form-control" id="victims" required placeholder="Names of victims" 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-md-6">
-                                <label for="crime_type" class="form-label">Type of Crime/Blotter *</label>
-                                <select class="form-select" id="crime_type" required>
+                                <label for="crime_type" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-gavel me-2" style="color: var(--ink-700);"></i>Type of Crime/Blotter *
+                                </label>
+                                <select class="form-select" id="crime_type" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="">Select Crime Type</option>
                                     <option value="Theft">Theft</option>
                                     <option value="Assault">Assault</option>
@@ -1041,29 +1075,46 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="incident_date" class="form-label">Date of Incident *</label>
-                                <input type="date" class="form-control" id="incident_date" required>
+                                <label for="incident_date" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-calendar-alt me-2" style="color: var(--ink-700);"></i>Date of Incident *
+                                </label>
+                                <input type="date" class="form-control" id="incident_date" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-md-6">
-                                <label for="incident_time" class="form-label">Time of Incident</label>
-                                <input type="time" class="form-control" id="incident_time">
+                                <label for="incident_time" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-clock me-2" style="color: var(--ink-700);"></i>Time of Incident
+                                </label>
+                                <input type="time" class="form-control" id="incident_time" 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12">
-                                <label for="incident_location" class="form-label">Location of Incident *</label>
-                                <input type="text" class="form-control" id="incident_location" required>
+                                <label for="incident_location" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-map-pin me-2" style="color: var(--ink-700);"></i>Location of Incident *
+                                </label>
+                                <input type="text" class="form-control" id="incident_location" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12">
-                                <label for="incident_description" class="form-label">Description of Incident *</label>
-                                <textarea class="form-control" id="incident_description" rows="4" required placeholder="Detailed description of what happened"></textarea>
+                                <label for="incident_description" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-file-alt me-2" style="color: var(--ink-700);"></i>Description of Incident *
+                                </label>
+                                <textarea class="form-control" id="incident_description" rows="4" required placeholder="Detailed description of what happened" 
+                                          style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;"></textarea>
                             </div>
 
                             {{-- Case Status --}}
                             <div class="col-12 mt-4">
-                                <h6 class="fw-bold text-primary">Case Information</h6>
+                                <h6 class="fw-bold" style="color: var(--ink-900); font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--ink-300);">
+                                    <i class="fas fa-clipboard-list me-2" style="color: var(--ink-700);"></i>Case Information
+                                </h6>
                             </div>
                             <div class="col-md-6">
-                                <label for="case_status" class="form-label">Case Status *</label>
-                                <select class="form-select" id="case_status" required>
+                                <label for="case_status" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-flag me-2" style="color: var(--ink-700);"></i>Case Status *
+                                </label>
+                                <select class="form-select" id="case_status" required 
+                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="">Select Status</option>
                                     <option value="Active">Active</option>
                                     <option value="Settled">Settled</option>
@@ -1071,18 +1122,30 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_reported" class="form-label">Date Reported *</label>
-                                <input type="date" class="form-control" id="date_reported" required>
+                                <label for="date_reported" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-calendar-check me-2" style="color: var(--ink-700);"></i>Date Reported *
+                                </label>
+                                <input type="date" class="form-control" id="date_reported" required 
+                                       style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12">
-                                <label for="action_taken" class="form-label">Action Taken/Remarks</label>
-                                <textarea class="form-control" id="action_taken" rows="3" placeholder="Actions taken or scheduled actions"></textarea>
+                                <label for="action_taken" class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
+                                    <i class="fas fa-tasks me-2" style="color: var(--ink-700);"></i>Action Taken/Remarks
+                                </label>
+                                <textarea class="form-control" id="action_taken" rows="3" placeholder="Actions taken or scheduled actions" 
+                                          style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Record</button>
+                    <div class="modal-footer" style="background: #f8f9fc; border: none; border-radius: 0 0 20px 20px; padding: 25px 30px;">
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal" 
+                                style="border-radius: 12px; padding: 12px 24px; font-weight: 600; border: 2px solid #6c757d; transition: all 0.3s ease;">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary fw-bold" 
+                                style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); border: none; border-radius: 12px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-save me-2"></i>Save Record
+                        </button>
                     </div>
                 </form>
             </div>

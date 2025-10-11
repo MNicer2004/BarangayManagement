@@ -153,7 +153,8 @@
                     <select name="role" class="form-select select-light" required>
                       <option value="" disabled selected>Select role</option>
                       <option value="captain" {{ old('role') == 'captain' ? 'selected' : '' }}>Barangay Captain</option>
-                      <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Admin Staff</option>
+                      <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Barangay Secretary</option>
+                      <option value="bhw" {{ old('role') == 'bhw' ? 'selected' : '' }}>BHW</option>
                     </select>
                   </div>
                   <div class="col-12 col-md-6">
