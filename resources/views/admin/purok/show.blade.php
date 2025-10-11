@@ -342,74 +342,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <div class="logo-container me-3">
-                        <img src="{{ asset('/assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
-                    </div>
-                    <div>
-                        <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
-                        <small class="text-light opacity-75 d-block" style="font-size: 0.7rem;">Brgy. San Pedro Apartado, Alcala</small>
-                        <small class="text-light opacity-75 d-block" style="font-size: 0.7rem;">Pangasinan</small>
-                    </div>
-                </div>
-                <button class="btn-close-sidebar d-md-none" id="closeSidebar">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <div class="d-flex align-items-center">
-                <div class="user-avatar me-3" style="background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-user text-white"></i>
-                </div>
-                <div>
-                    <div class="user-name">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Barangay Captain') }}</div>
-                    <div class="user-role">{{ Auth::user()->role ?? 'Barangay Captain' }}</div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column">
-            <div class="px-3 py-2">
-                <small class="text-light opacity-75">MENU</small>
-            </div>
-            <a href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : url('/admin/dashboard') }}" class="nav-link">
-                <i class="fas fa-tachometer-alt me-3"></i> Dashboard
-            </a>
-            <a href="{{ Route::has('admin.officials') ? route('admin.officials') : url('/admin/officials') }}" class="nav-link">
-                <i class="fas fa-users me-3"></i> Brgy Officials and Staff
-            </a>
-            <a href="{{ Route::has('admin.residents') ? route('admin.residents') : url('/admin/residents') }}" class="nav-link">
-                <i class="fas fa-address-book me-3"></i> Residents Record
-            </a>
-            <a href="{{ Route::has('admin.certificates') ? route('admin.certificates') : url('/admin/certificates') }}" class="nav-link">
-                <i class="fas fa-file-text me-3"></i> Certificate Management
-            </a>
-            <a href="{{ Route::has('admin.blotter') ? route('admin.blotter') : url('/admin/blotter') }}" class="nav-link">
-                <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
-            </a>
-            <a href="{{ Route::has('admin.purok') ? route('admin.purok') : url('/admin/purok') }}" class="nav-link active">
-                <i class="fas fa-house-user me-3"></i> Purok & Household Records
-            </a>
-            <a href="{{ Route::has('admin.medicine') ? route('admin.medicine') : url('/admin/medicine') }}" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Medicine Inventory
-            </a>
-            
-            @if(Auth::check() && Auth::user()->isCaptain())
-                <div class="px-3 py-2 mt-3">
-                    <small class="text-light opacity-75">ADMINISTRATION</small>
-                </div>
-                <a href="{{ Route::has('admin.account-approvals') ? route('admin.account-approvals') : url('/admin/account-approvals') }}" class="nav-link">
-                    <i class="fas fa-user-check me-3"></i> Account Approvals
-                </a>
-            @endif
-        </nav>
-    </div>
+    @include('components.sidebar')
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">

@@ -170,67 +170,7 @@
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center">
-                <div class="logo-container me-3">
-                    <img src="{{ asset('/assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
-                </div>
-                <div>
-                    <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
-                    <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
-                </div>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
-                    <div class="small text-light">
-                        @if(Auth::check())
-                            @if(Auth::user()->role === 'captain')
-                                Barangay Captain
-                            @elseif(Auth::user()->role === 'staff')
-                                Barangay Secretary
-                            @else
-                                Administrator
-                            @endif
-                        @else
-                            Administrator
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column">
-            <div class="px-3 py-2">
-                <small class="text-light opacity-75">MENU</small>
-            </div>
-            <a href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : url('/admin/dashboard') }}" class="nav-link">
-                <i class="fas fa-tachometer-alt me-3"></i> Dashboard
-            </a>
-            <a href="{{ Route::has('admin.officials') ? route('admin.officials') : url('/admin/officials') }}" class="nav-link">
-                <i class="fas fa-users me-3"></i> Brgy Officials and Staff
-            </a>
-            <a href="{{ Route::has('admin.residents') ? route('admin.residents') : url('/admin/residents') }}" class="nav-link">
-                <i class="fas fa-address-book me-3"></i> Residents Record
-            </a>
-            <a href="{{ Route::has('admin.certificates') ? route('admin.certificates') : (Route::has('admin.documents') ? route('admin.documents') : url('/admin/certificates')) }}" class="nav-link active">
-                <i class="fas fa-file-text me-3"></i> Document Management
-            </a>
-            <a href="{{ Route::has('admin.purok') ? route('admin.purok') : (Route::has('purok') ? route('purok') : url('/admin/purok')) }}" class="nav-link">
-                <i class="fas fa-house-user me-3"></i> Purok & Household Records
-            </a>
-            <a href="{{ route('admin.medicine') }}" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Medicine Inventory
-            </a>
-        </nav>
-    </div>
+    @include('components.sidebar')
 
     <div class="main-content">
         <div class="top-header d-flex justify-content-between align-items-center">

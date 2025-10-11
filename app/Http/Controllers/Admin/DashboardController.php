@@ -3,26 +3,44 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-// use App\Models\Resident; // uncomment + swap models to your schema
-// use App\Models\Blotter;
-// use App\Models\Purok;
-// ...
+use App\Models\Resident;
+use App\Models\Official;
+use App\Models\Blotter;
+use App\Models\Purok;
+use App\Models\Precinct;
+use App\Models\Revenue;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // TODO: replace these with real queries from your tables
+        // Count both residents and officials for total population
+        $residentCount = Resident::count();
+        $officialCount = Official::count();
+        
+        // Gender counts from both residents and officials
+        $residentMale = Resident::where('gender', 'Male')->count();
+        $residentFemale = Resident::where('gender', 'Female')->count();
+        $officialMale = Official::where('gender', 'Male')->count();
+        $officialFemale = Official::where('gender', 'Female')->count();
+        
+        // Voter counts from both residents and officials
+        $residentVoters = Resident::where('voter_status', true)->count();
+        $residentNonVoters = Resident::where('voter_status', false)->count();
+        $officialVoters = Official::where('voter_status', true)->count();
+        $officialNonVoters = Official::where('voter_status', false)->count();
+
+        // Real database queries for dashboard statistics
         $stats = [
-            'population'   => 2,   // Resident::count()
-            'male'         => 1,   // Resident::where('sex','male')->count()
-            'female'       => 1,   // Resident::where('sex','female')->count()
-            'voters'       => 0,   // Resident::where('is_voter',1)->count()
-            'non_voters'   => 2,   // Resident::where('is_voter',0)->count()
-            'precinct'     => 2,   // Precinct::count()
-            'purok'        => 7,   // Purok::count()
-            'blotter'      => 1,   // Blotter::count()
-            'revenue'      => 250, // Receipt::sum('amount')
+            'population'   => $residentCount + $officialCount,
+            'male'         => $residentMale + $officialMale,
+            'female'       => $residentFemale + $officialFemale,
+            'voters'       => $residentVoters + $officialVoters,
+            'non_voters'   => $residentNonVoters + $officialNonVoters,
+            'precinct'     => Precinct::count(),
+            'purok'        => Purok::count(),
+            'blotter'      => Blotter::count(),
+            'revenue'      => Revenue::where('status', 'completed')->sum('amount'),
         ];
 
         return view('admin.dashboard', compact('stats'));

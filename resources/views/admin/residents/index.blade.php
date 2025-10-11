@@ -11,92 +11,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <div class="logo-container me-3">
-                        <img src="{{ asset('assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
-                    </div>
-                    <div>
-                        <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
-                        <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
-                    </div>
-                </div>
-                <button class="btn-close-sidebar d-md-none" id="closeSidebar">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
-                    <div class="small text-light">
-                        @if(Auth::check())
-                            @if(Auth::user()->role === 'captain')
-                                Barangay Captain
-                            @elseif(Auth::user()->role === 'staff')
-                                Barangay Secretary
-                            @else
-                                Administrator
-                            @endif
-                        @else
-                            Administrator
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column">
-            <div class="px-3 py-2">
-                <small class="text-light opacity-75">MENU</small>
-            </div>
-            <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                <i class="fas fa-tachometer-alt me-3"></i> Dashboard
-            </a>
-            <a href="{{ route('admin.officials') }}" class="nav-link">
-                <i class="fas fa-users me-3"></i> Brgy Officials and Staff
-            </a>
-            <a href="{{ route('admin.residents') }}" class="nav-link active">
-                <i class="fas fa-address-book me-3"></i> Residents Record
-            </a>
-            <a href="{{ route('admin.certificates') }}" class="nav-link">
-                <i class="fas fa-file-text me-3"></i> Certificate Management
-            </a>
-            <a href="{{ route('admin.blotter') }}" class="nav-link">
-                <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
-            </a>
-            <a href="{{ route('admin.medicine') }}" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Medicine Inventory
-            </a>
-            
-            @if(Auth::check() && Auth::user()->isCaptain())
-                <div class="px-3 py-2 mt-3">
-                    <small class="text-light opacity-75">ADMINISTRATION</small>
-                </div>
-                <a href="{{ Route::has('admin.account-approvals') ? route('admin.account-approvals') : url('/admin/account-approvals') }}" class="nav-link">
-                    <i class="fas fa-user-check me-3"></i> Account Approvals
-                </a>
-            @endif
-            
-            <!-- Live Date and Time -->
-            <div class="px-3 py-3 mt-auto border-top border-secondary">
-                <div class="text-center">
-                    <small class="text-light opacity-75 d-block mb-1">PHILIPPINES TIME</small>
-                    <div class="text-light" id="live-datetime">
-                        <div class="fw-bold" id="live-date"></div>
-                        <div class="fs-6" id="live-time"></div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
+    @include('components.sidebar')
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
@@ -139,7 +54,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table id="residentsTable" class="w-100">
+                    <table id="residentsTable" class="table table-striped table-hover w-100">
                         <thead>
                             <tr>
                                 <th>Full Name</th>
@@ -158,7 +73,51 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- rows injected via JS so you can keep this page static --}}
+                            @forelse($residents as $resident)
+                                <tr>
+                                    <td>{{ $resident->name }}</td>
+                                    <td>{{ $resident->national_id ?? 'N/A' }}</td>
+                                    <td>{{ $resident->age ?? 'N/A' }}</td>
+                                    <td>{{ $resident->birthday ? $resident->birthday->format('Y-m-d') : 'N/A' }}</td>
+                                    <td>{{ $resident->civil_status ?? 'N/A' }}</td>
+                                    <td>{{ $resident->gender ?? 'N/A' }}</td>
+                                    <td>{{ $resident->purok ?? 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge {{ $resident->four_ps_beneficiary ? 'bg-success' : 'bg-secondary' }} text-white">
+                                            {{ $resident->four_ps_beneficiary ? 'Yes' : 'No' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ $resident->pwd_status ? 'bg-warning' : 'bg-secondary' }} text-white">
+                                            {{ $resident->pwd_status ? 'Yes' : 'No' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $resident->religion ?? 'N/A' }}</td>
+                                    <td>{{ $resident->occupation ?? 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge {{ $resident->voter_status ? 'voter-yes' : 'voter-no' }}">
+                                            {{ $resident->voter_status ? 'Yes' : 'No' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <button class="btn btn-sm btn-outline-info action-btn" data-action="view" data-id="{{ $resident->id }}" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-warning action-btn" data-action="edit" data-id="{{ $resident->id }}" title="Edit Resident">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger action-btn" data-action="delete" data-id="{{ $resident->id }}" title="Delete Resident">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="13" class="text-center">No residents found</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -170,7 +129,8 @@
     <div class="modal fade" id="residentModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg" style="background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); border: none; border-radius: 20px;">
-                <form id="residentForm">
+                <form id="residentForm" method="POST" action="{{ route('admin.residents.store') }}">
+                    @csrf
                     <div class="modal-header" style="background: linear-gradient(135deg, var(--ink-900) 0%, #2c3e50 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 25px 30px;">
                         <h5 class="modal-title fw-bold d-flex align-items-center" id="residentModalTitle" style="font-size: 1.4rem; margin: 0;">
                             <i class="fas fa-user-plus me-3" style="font-size: 1.3rem;"></i>
@@ -186,14 +146,14 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-user me-2" style="color: var(--ink-700);"></i>Full Name
                                 </label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Juan Dela Cruz" required 
+                                <input type="text" class="form-control" id="fullName" name="name" placeholder="Juan Dela Cruz" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-6">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-id-card me-2" style="color: var(--ink-700);"></i>National ID
                                 </label>
-                                <input type="text" class="form-control" id="nationalId" placeholder="00000012113213" required 
+                                <input type="text" class="form-control" id="nationalId" name="national_id" placeholder="00000012113213" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
 
@@ -201,21 +161,21 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-birthday-cake me-2" style="color: var(--ink-700);"></i>Age
                                 </label>
-                                <input type="number" class="form-control" id="age" placeholder="25" min="0" max="120" required 
+                                <input type="number" class="form-control" id="age" name="age" placeholder="25" min="0" max="120" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-calendar-alt me-2" style="color: var(--ink-700);"></i>Birthday
                                 </label>
-                                <input type="date" class="form-control" id="birthday" required 
+                                <input type="date" class="form-control" id="birthday" name="birthday" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-heart me-2" style="color: var(--ink-700);"></i>Civil Status
                                 </label>
-                                <select id="civilStatus" class="form-select" required 
+                                <select id="civilStatus" name="civil_status" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
                                     <option>Single</option>
@@ -230,7 +190,7 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-venus-mars me-2" style="color: var(--ink-700);"></i>Gender
                                 </label>
-                                <select id="gender" class="form-select" required 
+                                <select id="gender" name="gender" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select gender</option>
                                     <option>Male</option>
@@ -241,7 +201,7 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-map-marker-alt me-2" style="color: var(--ink-700);"></i>Purok
                                 </label>
-                                <select id="purok" class="form-select" required 
+                                <select id="purok" name="purok" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select purok</option>
                                     <option>Purok 1</option>
@@ -257,7 +217,7 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-pray me-2" style="color: var(--ink-700);"></i>Religion
                                 </label>
-                                <input type="text" class="form-control" id="religion" placeholder="Roman Catholic" required 
+                                <input type="text" class="form-control" id="religion" name="religion" placeholder="Roman Catholic" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
 
@@ -265,29 +225,29 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-briefcase me-2" style="color: var(--ink-700);"></i>Occupation
                                 </label>
-                                <input type="text" class="form-control" id="occupation" placeholder="Farmer" required 
+                                <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Farmer" required 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-family me-2" style="color: var(--ink-700);"></i>4Ps Beneficiary
                                 </label>
-                                <select id="fourPs" class="form-select" required 
+                                <select id="fourPs" name="four_ps_beneficiary" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-wheelchair me-2" style="color: var(--ink-700);"></i>PWD Status
                                 </label>
-                                <select id="pwd" class="form-select" required 
+                                <select id="pwd" name="pwd_status" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
 
@@ -295,18 +255,18 @@
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-vote-yea me-2" style="color: var(--ink-700);"></i>Voter Status
                                 </label>
-                                <select id="voterStatus" class="form-select" required 
+                                <select id="voterStatus" name="voter_status" class="form-select" required 
                                         style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                                     <option value="" selected disabled>Select status</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-6">
                                 <label class="form-label fw-bold" style="color: var(--ink-900); font-size: 0.95rem; margin-bottom: 8px;">
                                     <i class="fas fa-phone me-2" style="color: var(--ink-700);"></i>Contact Number
                                 </label>
-                                <input type="text" class="form-control" id="contact" placeholder="09XXXXXXXXX" 
+                                <input type="text" class="form-control" id="contact" name="contact_number" placeholder="09XXXXXXXXX" 
                                        style="border: 2px solid #e9ecef; border-radius: 12px; padding: 12px 16px; font-size: 0.95rem; transition: all 0.3s ease; background: #f8f9fa;">
                             </div>
                         </div>
@@ -521,188 +481,169 @@
             }
         }
 
-        // Residents table functionality
-        (() => {
-            // Demo dataset – replace with server data later
-            const seed = [
-                { name:'USER USER', nationalId:'00000012113213', age:13, birthday:'2010-01-15', civilStatus:'Single', gender:'Male', purok:'Purok 1', fourPs:'No', pwd:'No', religion:'Roman Catholic', occupation:'Student', voterStatus:'No', contact:'09123456789' },
-                { name:'USER', nationalId:'00000012113213', age:27, birthday:'1996-05-20', civilStatus:'Single', gender:'Male', purok:'Purok 2', fourPs:'Yes', pwd:'No', religion:'Born Again', occupation:'Farmer', voterStatus:'No', contact:'09123456790' },
-                { name:'USER', nationalId:'00000012113213', age:31, birthday:'1992-12-10', civilStatus:'Single', gender:'Male', purok:'Purok 3', fourPs:'No', pwd:'No', religion:'Iglesia ni Cristo', occupation:'Driver', voterStatus:'Yes', contact:'09123456791' },
-                { name:'USER', nationalId:'00000012113213', age:41, birthday:'1982-08-05', civilStatus:'Married', gender:'Male', purok:'Purok 4', fourPs:'Yes', pwd:'Yes', religion:'Roman Catholic', occupation:'Carpenter', voterStatus:'No', contact:'09123456792' },
-                { name:'USER', nationalId:'00000012113213', age:31, birthday:'1992-03-25', civilStatus:'Single', gender:'Female', purok:'Purok 5', fourPs:'No', pwd:'No', religion:'Methodist', occupation:'Teacher', voterStatus:'Yes', contact:'09123456793' },
-                { name:'Maria Santos', nationalId:'00000012113214', age:28, birthday:'1995-11-18', civilStatus:'Married', gender:'Female', purok:'Purok 6', fourPs:'Yes', pwd:'No', religion:'Roman Catholic', occupation:'Housewife', voterStatus:'Yes', contact:'09123456794' },
-                { name:'Jose Garcia', nationalId:'00000012113215', age:45, birthday:'1978-07-12', civilStatus:'Married', gender:'Male', purok:'Purok 7', fourPs:'No', pwd:'No', religion:'Seventh Day Adventist', occupation:'Businessman', voterStatus:'Yes', contact:'09123456795' },
-            ];
-
-            let rows = [...seed];
-            let dt;
-
-            const voterBadge = (status) => {
-                return `<span class="badge ${status==='Yes' ? 'voter-yes' : 'voter-no'}">${status}</span>`;
-            };
-
-            const statusBadge = (status, type) => {
-                const colorMap = {
-                    'fourPs': status === 'Yes' ? 'bg-success' : 'bg-secondary',
-                    'pwd': status === 'Yes' ? 'bg-warning' : 'bg-secondary'
-                };
-                return `<span class="badge ${colorMap[type]} text-white">${status}</span>`;
-            };
-
-            function renderTable(){
-                const tbody = document.querySelector('#residentsTable tbody');
-                tbody.innerHTML = '';
-                rows.forEach((r, idx) => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${r.name}</td>
-                        <td>${r.nationalId}</td>
-                        <td>${r.age}</td>
-                        <td>${r.birthday || 'N/A'}</td>
-                        <td>${r.civilStatus}</td>
-                        <td>${r.gender}</td>
-                        <td>${r.purok || 'N/A'}</td>
-                        <td>${statusBadge(r.fourPs || 'No', 'fourPs')}</td>
-                        <td>${statusBadge(r.pwd || 'No', 'pwd')}</td>
-                        <td>${r.religion || 'N/A'}</td>
-                        <td>${r.occupation || 'N/A'}</td>
-                        <td>${voterBadge(r.voterStatus)}</td>
-                        <td class="text-center">
-                            <div class="action-buttons d-flex justify-content-center">
-                                <button class="btn btn-view btn-sm" data-action="view" data-idx="${idx}" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-edit btn-sm" data-action="edit" data-idx="${idx}" title="Edit Resident">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-delete btn-sm" data-action="remove" data-idx="${idx}" title="Delete Resident">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                // (Re)init DataTable
-                if (dt) dt.destroy();
-                dt = new $.fn.dataTable.Api($('#residentsTable').DataTable({
-                    pageLength: 10,
-                    lengthMenu: [5,10,25,50],
-                    order: [[0,'asc']],
-                    columnDefs: [
-                        { orderable:false, targets: [12] }
-                    ],
-                    scrollX: true,
-                    responsive: true
-                }));
-
-                // Bind button actions
-                document.querySelectorAll('[data-action]').forEach(a => {
-                    a.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const idx = +a.dataset.idx;
-                        const act = a.dataset.action;
-                        if (act === 'view') viewResident(idx);
-                        if (act === 'edit') openEdit(idx);
-                        if (act === 'remove') removeRow(idx);
-                    });
-                });
-            }
-
-            function viewResident(index){
-                const r = rows[index];
-                // Populate the view modal with resident data
-                document.getElementById('viewFullName').value = r.name;
-                document.getElementById('viewNationalId').value = r.nationalId || '';
-                document.getElementById('viewAge').value = r.age || '';
-                document.getElementById('viewBirthday').value = r.birthday || 'N/A';
-                document.getElementById('viewCivilStatus').value = r.civilStatus || '';
-                document.getElementById('viewGender').value = r.gender || '';
-                document.getElementById('viewPurok').value = r.purok || 'N/A';
-                document.getElementById('viewReligion').value = r.religion || 'N/A';
-                document.getElementById('viewOccupation').value = r.occupation || 'N/A';
-                document.getElementById('viewFourPs').value = r.fourPs || 'No';
-                document.getElementById('viewPwd').value = r.pwd || 'No';
-                document.getElementById('viewVoterStatus').value = r.voterStatus || '';
-                document.getElementById('viewContact').value = r.contact || 'N/A';
-                new bootstrap.Modal('#viewModal').show();
-            }
-
-            function openEdit(index){
-                const r = rows[index];
-                document.getElementById('residentModalTitle').innerHTML = '<i class="fas fa-user-edit me-3" style="font-size: 1.3rem;"></i>Edit Resident';
-                document.getElementById('rowIndex').value = index;
-                document.getElementById('fullName').value = r.name;
-                document.getElementById('nationalId').value = r.nationalId || '';
-                document.getElementById('age').value = r.age || '';
-                document.getElementById('birthday').value = r.birthday || '';
-                document.getElementById('civilStatus').value = r.civilStatus || '';
-                document.getElementById('gender').value = r.gender || '';
-                document.getElementById('purok').value = r.purok || '';
-                document.getElementById('fourPs').value = r.fourPs || '';
-                document.getElementById('pwd').value = r.pwd || '';
-                document.getElementById('religion').value = r.religion || '';
-                document.getElementById('occupation').value = r.occupation || '';
-                document.getElementById('voterStatus').value = r.voterStatus || '';
-                document.getElementById('contact').value = r.contact || '';
-                new bootstrap.Modal('#residentModal').show();
-            }
-
-            function removeRow(index){
-                if (confirm('Are you sure you want to remove this resident?')) {
-                    rows.splice(index, 1);
-                    renderTable();
+        // Initialize DataTable after page loads
+        $(document).ready(function() {
+            @if($residents->count() > 0)
+            // Only initialize DataTable if there are residents
+            setTimeout(function() {
+                // Destroy existing instance if any
+                if ($.fn.DataTable.isDataTable('#residentsTable')) {
+                    $('#residentsTable').DataTable().destroy();
                 }
-            }
-
-            // Reset modal to "Add"
-            document.getElementById('residentModal').addEventListener('show.bs.modal', (e) => {
-                if (e.relatedTarget && e.relatedTarget.getAttribute('data-bs-target') === '#residentModal') {
-                    document.getElementById('residentModalTitle').innerHTML = '<i class="fas fa-user-plus me-3" style="font-size: 1.3rem;"></i>Add Resident';
-                    document.getElementById('rowIndex').value = '';
-                    document.getElementById('residentForm').reset();
-                }
-            });
-
-            // Save (add or edit)
-            document.getElementById('residentForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const idx = document.getElementById('rowIndex').value;
-                const payload = {
-                    name: document.getElementById('fullName').value.trim(),
-                    nationalId: document.getElementById('nationalId').value.trim(),
-                    age: document.getElementById('age').value,
-                    birthday: document.getElementById('birthday').value,
-                    civilStatus: document.getElementById('civilStatus').value,
-                    gender: document.getElementById('gender').value,
-                    purok: document.getElementById('purok').value,
-                    fourPs: document.getElementById('fourPs').value,
-                    pwd: document.getElementById('pwd').value,
-                    religion: document.getElementById('religion').value.trim(),
-                    occupation: document.getElementById('occupation').value.trim(),
-                    voterStatus: document.getElementById('voterStatus').value,
-                    contact: document.getElementById('contact').value.trim(),
-                };
                 
-                // Basic validation
-                if (!payload.name || !payload.nationalId || !payload.age || !payload.birthday || 
-                    !payload.civilStatus || !payload.gender || !payload.purok || !payload.fourPs || 
-                    !payload.pwd || !payload.religion || !payload.occupation || !payload.voterStatus) {
-                    alert('Please fill in all required fields.');
-                    return;
+                // Initialize with simple configuration
+                $('#residentsTable').DataTable({
+                    pageLength: 10,
+                    order: [[0, 'asc']],
+                    columnDefs: [
+                        { orderable: false, targets: -1 }  // Disable sorting on last column (Action)
+                    ],
+                    autoWidth: false,
+                    destroy: true
+                });
+            }, 100);
+            @endif
+        });
+
+        // Handle action buttons with event delegation
+        $(document).on('click', '.action-btn', function(e) {
+            e.preventDefault();
+            const action = $(this).data('action');
+            const id = $(this).data('id');
+            
+            if (action === 'view') {
+                viewResident(id);
+            } else if (action === 'edit') {
+                editResident(id);
+            } else if (action === 'delete') {
+                deleteResident(id);
+            }
+        });
+
+        // View Resident
+        function viewResident(id) {
+            $.ajax({
+                url: `/admin/residents/${id}`,
+                type: 'GET',
+                success: function(resident) {
+                    $('#residentModalTitle').html('<i class="fas fa-eye me-3"></i>View Resident');
+                    fillResidentForm(resident);
+                    $('#residentForm input, #residentForm select').prop('readonly', true).prop('disabled', true);
+                    $('#residentForm button[type="submit"]').hide();
+                    new bootstrap.Modal('#residentModal').show();
+                },
+                error: function() {
+                    alert('Error loading resident data');
                 }
-
-                if (idx === '') rows.unshift(payload);     // add new at top
-                else rows[idx] = payload;                  // update
-
-                bootstrap.Modal.getInstance(document.getElementById('residentModal')).hide();
-                renderTable();
             });
+        }
 
-            // First render
-            renderTable();
-        })();
+        // Edit Resident
+        function editResident(id) {
+            $.ajax({
+                url: `/admin/residents/${id}`,
+                type: 'GET',
+                success: function(resident) {
+                    $('#residentModalTitle').html('<i class="fas fa-edit me-3"></i>Edit Resident');
+                    $('#residentForm').attr('action', `/admin/residents/${id}`);
+                    $('#residentForm').append('<input type="hidden" name="_method" value="PUT">');
+                    $('#residentForm').append('<input type="hidden" name="resident_id" value="' + id + '">');
+                    fillResidentForm(resident);
+                    $('#residentForm input, #residentForm select').prop('readonly', false).prop('disabled', false);
+                    $('#residentForm button[type="submit"]').show();
+                    new bootstrap.Modal('#residentModal').show();
+                },
+                error: function() {
+                    alert('Error loading resident data');
+                }
+            });
+        }
+
+        // Delete Resident
+        function deleteResident(id) {
+            if (confirm('Are you sure you want to delete this resident?')) {
+                const form = $('<form>', {
+                    method: 'POST',
+                    action: `/admin/residents/${id}`
+                }).append(
+                    $('<input>', {type: 'hidden', name: '_token', value: '{{ csrf_token() }}'}),
+                    $('<input>', {type: 'hidden', name: '_method', value: 'DELETE'})
+                );
+                $('body').append(form);
+                form.submit();
+            }
+        }
+
+        // Fill form helper
+        function fillResidentForm(resident) {
+            $('#fullName').val(resident.name || '');
+            $('#nationalId').val(resident.national_id || '');
+            $('#age').val(resident.age || '');
+            $('#birthday').val(resident.birthday || '');
+            $('#civilStatus').val(resident.civil_status || '');
+            $('#gender').val(resident.gender || '');
+            $('#purok').val(resident.purok || '');
+            $('#religion').val(resident.religion || '');
+            $('#occupation').val(resident.occupation || '');
+            $('#fourPs').val(resident.four_ps_beneficiary ? '1' : '0');
+            $('#pwd').val(resident.pwd_status ? '1' : '0');
+            $('#voterStatus').val(resident.voter_status ? '1' : '0');
+            $('#contact').val(resident.contact_number || '');
+        }
+
+        // Reset form when adding new resident
+        $('#residentModal').on('show.bs.modal', function(e) {
+            if ($(e.relatedTarget).hasClass('btn-primary')) {
+                $('#residentModalTitle').html('<i class="fas fa-user-plus me-3"></i>Add Resident');
+                $('#residentForm').attr('action', '/admin/residents');
+                $('#residentForm input[name="_method"]').remove();
+                $('#residentForm input[name="resident_id"]').remove();
+                $('#residentForm')[0].reset();
+                $('#residentForm input, #residentForm select').prop('readonly', false).prop('disabled', false);
+                $('#residentForm button[type="submit"]').show();
+            }
+        });
+
+        // Form submission
+        $('#residentForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const method = $(this).find('input[name="_method"]').val() || 'POST';
+            const url = $(this).attr('action');
+            
+            const submitBtn = $(this).find('button[type="submit"]');
+            const originalText = submitBtn.html();
+            
+            submitBtn.html('<i class="fas fa-spinner fa-spin me-2"></i>Saving...').prop('disabled', true);
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    bootstrap.Modal.getInstance(document.getElementById('residentModal')).hide();
+                    alert(response.message || 'Resident saved successfully!');
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        let errorMsg = 'Please fix the following errors:\n\n';
+                        for (const [field, messages] of Object.entries(xhr.responseJSON.errors)) {
+                            errorMsg += `• ${messages.join(', ')}\n`;
+                        }
+                        alert(errorMsg);
+                    } else {
+                        alert('An error occurred while saving the resident.');
+                    }
+                },
+                complete: function() {
+                    submitBtn.html(originalText).prop('disabled', false);
+                }
+            });
+        });
 
         // Live Date and Time in Philippines Time
         function updateDateTime() {

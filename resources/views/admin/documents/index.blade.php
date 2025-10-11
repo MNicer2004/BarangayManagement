@@ -407,76 +407,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <div class="logo-container me-3">
-                        <img src="{{ asset('assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
-                    </div>
-                    <div>
-                        <span class="fw-bold text-white fs-5 d-block">Barangay Management & Medicine Inventory</span>
-                        <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
-                    </div>
-                </div>
-                <button class="btn-close-sidebar d-md-none" id="closeSidebar">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
-                    <div class="small text-light">
-                        @if(Auth::check())
-                            @if(Auth::user()->role === 'captain')
-                                Barangay Captain
-                            @elseif(Auth::user()->role === 'staff')
-                                Barangay Secretary
-                            @else
-                                Administrator
-                            @endif
-                        @else
-                            Administrator
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column">
-            <div class="px-3 py-2">
-                <small class="text-light opacity-75">MENU</small>
-            </div>
-            <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                <i class="fas fa-tachometer-alt me-3"></i> Dashboard
-            </a>
-            <a href="{{ route('admin.officials') }}" class="nav-link">
-                <i class="fas fa-users me-3"></i> Brgy Officials and Staff
-            </a>
-            <a href="{{ route('admin.residents') }}" class="nav-link">
-                <i class="fas fa-address-book me-3"></i> Residents Record
-            </a>
-            <a href="{{ route('admin.certificates') }}" class="nav-link active">
-                <i class="fas fa-file-text me-3"></i> Certificate Management
-            </a>
-            <a href="{{ route('admin.blotter') }}" class="nav-link">
-                <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
-            </a>
-            <a href="{{ route('purok') }}" class="nav-link">
-                <i class="fas fa-house-user me-3"></i> Purok & Household Records
-            </a>
-            <a href="{{ route('admin.medicine') }}" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Medicine Inventory
-            </a>
-        </nav>
-    </div>
+    @include('components.sidebar')
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">

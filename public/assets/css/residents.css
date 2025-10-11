@@ -399,12 +399,10 @@ table#residentsTable thead th,
     transform: none;
 }
 
-/* Action buttons styling */
-.action-buttons .btn {
-    border: none;
+/* Action buttons styling - matching officials design exactly */
+.d-flex.gap-2 .btn.btn-sm {
     border-radius: 6px;
     padding: 8px 12px;
-    margin: 0 3px;
     transition: all 0.3s ease;
     font-size: 0.9rem;
     min-width: 36px;
@@ -414,51 +412,30 @@ table#residentsTable thead th,
     justify-content: center;
 }
 
-.action-buttons .btn i {
+.d-flex.gap-2 .btn.btn-sm i {
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-.action-buttons .btn-view {
-    background: #17a2b8;
-    color: white !important;
-    border: 1px solid #17a2b8;
-}
-
-.action-buttons .btn-view:hover {
-    background: #138496;
-    border-color: #138496;
+/* Enhanced hover effects for outlined buttons - matching officials exactly */
+.d-flex.gap-2 .btn.btn-sm.btn-outline-info:hover {
     transform: translateY(-1px);
     box-shadow: 0 3px 8px rgba(23, 162, 184, 0.3);
-    color: white !important;
 }
 
-.action-buttons .btn-edit {
-    background: #28a745;
-    color: white !important;
-    border: 1px solid #28a745;
-}
-
-.action-buttons .btn-edit:hover {
-    background: #218838;
-    border-color: #1e7e34;
+.d-flex.gap-2 .btn.btn-sm.btn-outline-warning:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
-    color: white !important;
+    box-shadow: 0 3px 8px rgba(255, 193, 7, 0.3);
 }
 
-.action-buttons .btn-delete {
-    background: #dc3545;
-    color: white !important;
-    border: 1px solid #dc3545;
-}
-
-.action-buttons .btn-delete:hover {
-    background: #c82333;
-    border-color: #bd2130;
+.d-flex.gap-2 .btn.btn-sm.btn-outline-danger:hover {
     transform: translateY(-1px);
     box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3);
-    color: white !important;
+}
+
+/* Ensure gap-2 works properly */
+.d-flex.gap-2 {
+    gap: 0.5rem !important;
 }
 
 /* Responsive table improvements */

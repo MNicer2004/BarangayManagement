@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\AccountApprovalController;
+use App\Http\Controllers\Admin\OfficialController;
+use App\Http\Controllers\Admin\ResidentController;
+use App\Http\Controllers\Admin\PurokController;
 
 // Public routes
 Route::view('/', 'public.home')->name('public.home');
@@ -23,11 +26,24 @@ Route::view('/auth', 'public.auth')->name('public.auth');
 // Protected admin routes
 Route::middleware(['auth', 'approved'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::view('/officials', 'admin.officials.index')->name('officials');
-    Route::view('/residents', 'admin.residents.index')->name('residents');
+    Route::get('/officials', [OfficialController::class, 'index'])->name('officials');
+    Route::get('/officials/{official}', [OfficialController::class, 'show'])->name('officials.show');
+    Route::post('/officials', [OfficialController::class, 'store'])->name('officials.store');
+    Route::put('/officials/{official}', [OfficialController::class, 'update'])->name('officials.update');
+    Route::delete('/officials/{official}', [OfficialController::class, 'destroy'])->name('officials.destroy');
+    
+    Route::get('/residents', [ResidentController::class, 'index'])->name('residents');
+    Route::get('/residents/{resident}', [ResidentController::class, 'show'])->name('residents.show');
+    Route::post('/residents', [ResidentController::class, 'store'])->name('residents.store');
+    Route::put('/residents/{resident}', [ResidentController::class, 'update'])->name('residents.update');
+    Route::delete('/residents/{resident}', [ResidentController::class, 'destroy'])->name('residents.destroy');
     Route::get('/blotter', [BlotterController::class, 'index'])->name('blotter');
     Route::get('/documents', [DocumentsController::class, 'index'])->name('documents');
     Route::get('/medicine', [MedicineController::class, 'index'])->name('medicine');
+    
+    // Purok routes
+    Route::get('/purok', [PurokController::class, 'index'])->name('purok');
+    Route::get('/purok/{id}', [PurokController::class, 'show'])->name('purok.show');
     
     // Certificate routes
     Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates');

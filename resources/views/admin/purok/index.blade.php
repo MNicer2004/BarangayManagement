@@ -241,84 +241,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <div class="logo-container me-3">
-                        <img src="{{ asset('/assets/images/logo.png') }}" class="sidebar-logo" alt="BM System Logo">
-                    </div>
-                    <div>
-                        <span class="fw-bold text-white fs-5 d-block">BM SYSTEM</span>
-                        <small class="text-light opacity-75">Brgy. San Pedro Apartado, Alcala Pangasinan</small>
-                    </div>
-                </div>
-                <button class="btn-close-sidebar d-md-none" id="closeSidebar">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                    <i class="fas fa-user" style="color: var(--ink-700);"></i>
-                </div>
-                <div>
-                    <div class="fw-semibold text-white">{{ Auth::user()->role === 'captain' ? 'Ador G. Espiritu' : (Auth::user()->name ?? 'Admin') }}</div>
-                    <div class="small text-light">
-                        @if(Auth::check())
-                            @if(Auth::user()->role === 'captain')
-                                Barangay Captain
-                            @elseif(Auth::user()->role === 'staff')
-                                Barangay Secretary
-                            @else
-                                Administrator
-                            @endif
-                        @else
-                            Administrator
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column">
-            <div class="px-3 py-2">
-                <small class="text-light opacity-75">MENU</small>
-            </div>
-            <a href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : url('/admin/dashboard') }}" class="nav-link">
-                <i class="fas fa-tachometer-alt me-3"></i> Dashboard
-            </a>
-            <a href="{{ Route::has('admin.officials') ? route('admin.officials') : url('/admin/officials') }}" class="nav-link">
-                <i class="fas fa-users me-3"></i> Brgy Officials and Staff
-            </a>
-            <a href="{{ Route::has('admin.residents') ? route('admin.residents') : url('/admin/residents') }}" class="nav-link">
-                <i class="fas fa-address-book me-3"></i> Residents Record
-            </a>
-            <a href="{{ Route::has('admin.certificates') ? route('admin.certificates') : url('/admin/certificates') }}" class="nav-link">
-                <i class="fas fa-file-text me-3"></i> Certificate Management
-            </a>
-            <a href="{{ Route::has('admin.blotter') ? route('admin.blotter') : url('/admin/blotter') }}" class="nav-link">
-                <i class="fas fa-gavel me-3"></i> Crime / Blotter Records
-            </a>
-            <a href="{{ Route::has('admin.purok') ? route('admin.purok') : url('/admin/purok') }}" class="nav-link active">
-                <i class="fas fa-house-user me-3"></i> Purok & Household Records
-            </a>
-            <a href="{{ Route::has('admin.medicine') ? route('admin.medicine') : url('/admin/medicine') }}" class="nav-link">
-                <i class="fas fa-pills me-3"></i> Medicine Inventory
-            </a>
-            
-            @if(Auth::check() && Auth::user()->isCaptain())
-                <div class="px-3 py-2 mt-3">
-                    <small class="text-light opacity-75">ADMINISTRATION</small>
-                </div>
-                <a href="{{ Route::has('admin.account-approvals') ? route('admin.account-approvals') : url('/admin/account-approvals') }}" class="nav-link">
-                    <i class="fas fa-user-check me-3"></i> Account Approvals
-                </a>
-            @endif
-        </nav>
-    </div>
+    @include('components.sidebar')
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
@@ -440,7 +363,7 @@
                                 </div>
 
                                 <div class="d-grid">
-                                    <a href="{{ Route::has('admin.purok.show') ? route('admin.purok.show', $purok['id']) : '#' }}" 
+                                    <a href="{{ Route::has('admin.purok.show') ? route('admin.purok.show', $purok['id']) : url('/admin/purok/' . $purok['id']) }}" 
                                        class="btn" style="background: var(--ink-700); color: white; border: none; border-radius: 8px; padding: 0.75rem; font-weight: 500; transition: transform 0.2s;">
                                         <i class="fas fa-eye me-2"></i>View Details
                                     </a>
